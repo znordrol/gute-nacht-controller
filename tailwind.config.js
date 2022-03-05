@@ -21,11 +21,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        primary: ['Roboto', ...fontFamily.sans],
+        primary: ['Inter', ...fontFamily.sans],
       },
       colors: {
         // Customize it on globals.css :root
         primary: getColorShades([50, 100, 200, 300, 400, 500, 600, 700]),
+        dark: '#222222',
+        light: '#dddddd',
       },
     },
   },
