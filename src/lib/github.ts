@@ -7,7 +7,7 @@ const octokit = new (Octokit.plugin(createOrUpdateTextFile))({
 
 type UpdateFileOptions = {
   owner?: string;
-  repo: string;
+  repo?: string;
   path: string;
   content: string;
   message: string;
@@ -15,7 +15,7 @@ type UpdateFileOptions = {
 
 export const updateFile = async ({
   owner = 'lordronz',
-  repo,
+  repo = 'gute-nacht',
   path,
   content,
   message,
@@ -33,4 +33,25 @@ export const updateFile = async ({
   } else {
     console.log(`${path} already up to date`);
   }
+};
+
+type TriggerWorkflowOptions = {
+  repo?: string;
+  owner?: string;
+  workflow_id?: string;
+  ref?: string;
+};
+
+export const triggerWorkflow = async ({
+  owner = 'lordronz',
+  repo = 'gute-nacht',
+  workflow_id = 'gute_nacht.yml',
+  ref = 'main',
+}: TriggerWorkflowOptions) => {
+  await octokit.rest.actions.createWorkflowDispatch({
+    owner,
+    repo,
+    workflow_id,
+    ref,
+  });
 };
