@@ -1,7 +1,6 @@
-import clsx from 'clsx';
-
 import type { UnstyledLinkProps } from '@/components/links/UnstyledLink';
 import UnstyledLink from '@/components/links/UnstyledLink';
+import clsxm from '@/lib/clsxm';
 
 const enum ButtonVariant {
   primary,
@@ -23,8 +22,7 @@ const ButtonLink = ({
 }: ButtonLinkProps) => (
   <UnstyledLink
     {...rest}
-    className={clsx(
-      className,
+    className={clsxm(
       'inline-flex items-center rounded px-4 py-2 font-semibold',
       'focus:outline-none focus-visible:ring focus-visible:ring-primary-500',
       'shadow-sm',
@@ -52,7 +50,7 @@ const ButtonLink = ({
         variant === 'light' && [
           'bg-white text-black',
           'border border-gray-300',
-          'hover:text-dark hover:bg-gray-100',
+          'hover:bg-gray-100 hover:text-dark',
           'active:bg-white/80 disabled:bg-gray-200',
         ],
         variant === 'dark' && [
@@ -61,7 +59,8 @@ const ButtonLink = ({
           'hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-700',
         ],
       ],
-      'disabled:cursor-not-allowed'
+      'disabled:cursor-not-allowed',
+      className
     )}
   >
     {children}

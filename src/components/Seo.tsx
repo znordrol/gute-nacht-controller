@@ -1,13 +1,15 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
+import { openGraph } from '@/lib/og';
+
 const defaultMeta = {
-  title: 'Next.js TypeScript Starter',
-  siteName: process.env.NEXT_PUBLIC_HOSTNAME || 'lordronz.github.io',
-  description: 'NextJS Typescript Boilerplate.',
+  title: 'Aaron Christopher',
+  siteName: process.env.NEXT_PUBLIC_HOSTNAME || 'lordronz.vercel.app',
+  description: 'My online portfolio and blog website.',
   url: process.env.NEXT_PUBLIC_HOSTNAME
     ? `https://${process.env.NEXT_PUBLIC_HOSTNAME}`
-    : 'https://lordronz.github.io',
+    : 'https://lordronz.vercel.app',
   image: '/vercel.svg',
   type: 'website',
   robots: 'follow, index',
@@ -15,8 +17,8 @@ const defaultMeta = {
 };
 
 export type SeoProps = {
-  date?: string;
-  templateTitle?: string;
+  readonly date?: string;
+  readonly templateTitle?: string;
 } & Partial<typeof defaultMeta>;
 
 const Seo = (props: SeoProps) => {
@@ -29,6 +31,13 @@ const Seo = (props: SeoProps) => {
   meta['title'] = props.templateTitle
     ? `${props.templateTitle} | ${meta.siteName}`
     : meta.title;
+
+  meta['image'] = openGraph({
+    type: 'gradient',
+    description: meta.description,
+    siteName: props.templateTitle ? meta.siteName : meta.title,
+    templateTitle: props.templateTitle,
+  });
 
   return (
     <Head>
@@ -64,10 +73,10 @@ const Seo = (props: SeoProps) => {
 };
 
 export type Favicons = {
-  readonly rel: string;
-  readonly href: string;
-  readonly sizes?: string;
-  readonly type?: string;
+  rel: string;
+  href: string;
+  sizes?: string;
+  type?: string;
 };
 
 const favicons: readonly Favicons[] = [
