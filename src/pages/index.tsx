@@ -1,4 +1,5 @@
-import type { NextPage } from 'next';
+import { withIronSessionSsr } from 'iron-session/next';
+import type { GetServerSideProps, NextPage } from 'next';
 
 import Button from '@/components/buttons/Button';
 import Seo from '@/components/Seo';
@@ -52,5 +53,34 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
+  async ({ req }) => {
+    const user = req.session.user;
+
+    if (!user || user?.admin !== true) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {
+        user: req.session.user,
+      },
+    };
+  },
+  {
+    cookieName: 'cookie_ini_khusus_buatmu',
+    password: process.env.COOKIE_PASS as string,
+    // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
+    cookieOptions: {
+      secure: process.env.NODE_ENV === 'production',
+    },
+  }
+);
 
 export default Home;

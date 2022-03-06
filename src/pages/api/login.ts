@@ -59,7 +59,7 @@ export default withIronSessionApiRoute(
     }
   },
   {
-    cookieName: 'anjay_kue',
+    cookieName: 'cookie_ini_khusus_buatmu',
     password: process.env.COOKIE_PASS as string,
     // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
     cookieOptions: {

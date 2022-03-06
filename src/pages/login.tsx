@@ -9,7 +9,7 @@ import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
 import type { LoginResponse } from '@/pages/api/login';
 
-import shouko from '../../public/images/nishimiya_shouko.jpg';
+import jibril from '../../public/images/jibril.png';
 
 const toastStyle = { background: '#333', color: '#eee' };
 
@@ -58,12 +58,7 @@ const Login: NextPage = () => {
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
             <div>
               <h1 className='mb-4 text-4xl text-primary-300'>Login</h1>
-              <Image
-                src={shouko}
-                alt='Shouko Nishimiya'
-                width={100}
-                height={100}
-              />
+              <Image src={jibril} alt='Jibril' width={100} height={100} />
             </div>
             <form onSubmit={handleSubmit}>
               <label htmlFor='name'>Name</label>
