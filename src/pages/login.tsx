@@ -28,13 +28,13 @@ const Login: NextPage = () => {
       {
         loading: 'Loading...',
         success: () => {
-          return 'Logged in !, guten morgen sir!';
+          return 'Logged in !, hellooo 🥰🥰!';
         },
         error: (err: Error) => {
           if (axios.isAxiosError(err)) {
             return err.response?.data.message ?? err.message;
           }
-          return 'Login failed, who tf are you';
+          return 'Login failed, who are you 🤔';
         },
       }
     );
