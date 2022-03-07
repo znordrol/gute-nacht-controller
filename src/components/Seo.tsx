@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { openGraph } from '@/lib/og';
 
 const defaultMeta = {
-  title: 'Aaron Christopher',
-  siteName: process.env.NEXT_PUBLIC_HOSTNAME || 'lordronz.vercel.app',
-  description: 'My online portfolio and blog website.',
+  title: 'Gute Nacht Controller',
+  siteName: process.env.NEXT_PUBLIC_HOSTNAME || 'gn-tia.vercel.app',
+  description: 'A website to control gute nacht webhook execution.',
   url: process.env.NEXT_PUBLIC_HOSTNAME
     ? `https://${process.env.NEXT_PUBLIC_HOSTNAME}`
-    : 'https://lordronz.vercel.app',
+    : 'https://gn-tia.vercel.app',
   image: '/vercel.svg',
   type: 'website',
   robots: 'follow, index',
