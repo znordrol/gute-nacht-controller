@@ -12,6 +12,7 @@ const Home: NextPage = () => {
   const [gnLoading, setGnLoading] = useState<boolean>(false);
   const [noGnLoading, setNoGnLoading] = useState<boolean>(false);
   const [yesGnLoading, setYesGnLoading] = useState<boolean>(false);
+  const [gnTimeLoading, setGnTimeLoading] = useState<boolean>(false);
   const [gnTime, setGnTime] = useState<string>('23:00');
 
   const handleGuteNacht = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -86,18 +87,22 @@ const Home: NextPage = () => {
   const handleGnTime = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    toast.promise(axios.post('/api/gn-time', { time: gnTime }), {
-      loading: 'Loading...',
-      success: () => {
-        return 'Waktu good nightnya udh keganti yayy 😊';
-      },
-      error: (err: Error) => {
-        if (axios.isAxiosError(err)) {
-          return err.response?.data.message ?? err.message;
-        }
-        return 'Waduh error 😭😭, segera panggil akuu';
-      },
-    });
+    setGnTimeLoading(true);
+
+    toast
+      .promise(axios.post('/api/gn-time', { time: gnTime }), {
+        loading: 'Loading...',
+        success: () => {
+          return 'Waktu good nightnya udh keganti yayy 😊';
+        },
+        error: (err: Error) => {
+          if (axios.isAxiosError(err)) {
+            return err.response?.data.message ?? err.message;
+          }
+          return 'Waduh error 😭😭, segera panggil akuu';
+        },
+      })
+      .then(() => setGnTimeLoading(false));
   };
 
   return (
@@ -178,7 +183,11 @@ const Home: NextPage = () => {
                   onChange={(e) => setGnTime(e.target.value)}
                 />
                 <div className='mt-4'>
-                  <Button className='bg-rose-300' type='submit'>
+                  <Button
+                    className='bg-rose-300'
+                    type='submit'
+                    isLoading={gnTimeLoading}
+                  >
                     Ganti waktunya 😊
                   </Button>
                 </div>
