@@ -85,6 +85,19 @@ const Home: NextPage = () => {
 
   const handleGnTime = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    toast.promise(axios.post('/api/gn-time', { time: gnTime }), {
+      loading: 'Loading...',
+      success: () => {
+        return 'Waktu good nightnya udh keganti yayy 😊';
+      },
+      error: (err: Error) => {
+        if (axios.isAxiosError(err)) {
+          return err.response?.data.message ?? err.message;
+        }
+        return 'Waduh error 😭😭, segera panggil akuu';
+      },
+    });
   };
 
   return (
@@ -155,6 +168,7 @@ const Home: NextPage = () => {
               id='goodnighttime'
             >
               <h3>Ganti waktu good nightnya</h3>
+              <p>Delaynya +- 30 menit -{'>'} 1 jam</p>
               <form onSubmit={handleGnTime}>
                 <input
                   type='time'
@@ -164,8 +178,8 @@ const Home: NextPage = () => {
                   onChange={(e) => setGnTime(e.target.value)}
                 />
                 <div className='mt-4'>
-                  <Button className='bg-rose-300'>
-                    Good night buat ntar 💚
+                  <Button className='bg-rose-300' type='submit'>
+                    Ganti waktunya 😊
                   </Button>
                 </div>
               </form>
