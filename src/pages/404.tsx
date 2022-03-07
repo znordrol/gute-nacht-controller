@@ -1,11 +1,12 @@
 import type { NextPage } from 'next';
 
 import Accent from '@/components/Accent';
+import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
 
 const NotFound: NextPage = () => (
-  <>
+  <Layout>
     <Seo templateTitle='Not Found' />
     <main>
       <section className='bg-black text-primary-50'>
@@ -28,7 +29,7 @@ const NotFound: NextPage = () => (
         </div>
       </section>
     </main>
-  </>
+  </Layout>
 );
 
 export default NotFound;

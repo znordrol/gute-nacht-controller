@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 import Button from '@/components/buttons/Button';
+import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
@@ -50,7 +51,7 @@ const Login: NextPage = () => {
   };
 
   return (
-    <>
+    <Layout>
       <Seo templateTitle='Login' />
       <main>
         <section className='bg-black text-primary-50'>
@@ -98,7 +99,7 @@ const Login: NextPage = () => {
           },
         }}
       />
-    </>
+    </Layout>
   );
 };
 

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 import Button from '@/components/buttons/Button';
+import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
 
@@ -106,7 +107,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <>
+    <Layout>
       <Seo />
       <main>
         <section>
@@ -207,7 +208,7 @@ const Home: NextPage = () => {
           },
         }}
       />
-    </>
+    </Layout>
   );
 };
 
