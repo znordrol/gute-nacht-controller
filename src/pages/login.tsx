@@ -7,11 +7,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import Button from '@/components/buttons/Button';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
+import { toastStyle } from '@/constant/toast';
 import type { LoginResponse } from '@/pages/api/login';
 
 import jibril from '../../public/images/jibril.png';
-
-const toastStyle = { background: '#333', color: '#eee' };
 
 const Login: NextPage = () => {
   const [name, setName] = useState<string>('');

@@ -5,6 +5,45 @@ const octokit = new (Octokit.plugin(createOrUpdateTextFile))({
   auth: process.env.PERSONAL_ACCESS_TOKEN,
 });
 
+type GetFileOptions = {
+  owner?: string;
+  repo?: string;
+  path: string;
+};
+
+type GetFileResponseData = {
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  url: string;
+  html_url: string;
+  git_url: string;
+  download_url: string;
+  type: string;
+  content: string;
+  encoding: string;
+  _links: {
+    self: string;
+    git: string;
+    html: string;
+  };
+};
+
+export const getFile = async ({
+  owner = 'lordronz',
+  repo = 'gute-nacht',
+  path,
+}: GetFileOptions) => {
+  const { data } = (await octokit.rest.repos.getContent({
+    owner,
+    repo,
+    path,
+  })) as { data: GetFileResponseData };
+
+  return Buffer.from(data.content, 'base64').toString();
+};
+
 type UpdateFileOptions = {
   owner?: string;
   repo?: string;
@@ -20,19 +59,13 @@ export const updateFile = async ({
   content,
   message,
 }: UpdateFileOptions) => {
-  const { updated } = await octokit.createOrUpdateTextFile({
+  await octokit.createOrUpdateTextFile({
     owner,
     repo,
     path,
     content,
     message,
   });
-
-  if (updated) {
-    console.log(`${path} updated`);
-  } else {
-    console.log(`${path} already up to date`);
-  }
 };
 
 type TriggerWorkflowOptions = {

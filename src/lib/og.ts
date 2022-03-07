@@ -19,7 +19,7 @@ export const openGraph = ({
   templateTitle,
   description,
   type = 'general',
-  logo = 'https://lordronz.vercel.app/images/logo.jpg',
+  logo = 'https://gn-tia.vercel.app/images/jibril.png',
   logoWidth = '100',
 }: OpenGraphType): string => {
   const ogLogo = encodeURIComponent(logo.trim());
