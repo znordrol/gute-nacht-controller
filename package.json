@@ -1,6 +1,7 @@
 {
   "name": "gute-nacht-controller",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,6 +17,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@headlessui/react": "^1.5.0",
     "@octokit/plugin-create-or-update-text-file": "^1.0.4",
     "axios": "^0.26.0",
     "bcrypt": "^5.0.1",
