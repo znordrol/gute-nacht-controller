@@ -17,6 +17,7 @@ import jibril from '../../public/images/jibril.png';
 const Login: NextPage = () => {
   const [name, setName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
 
   const router = useRouter();
 
@@ -27,6 +28,7 @@ const Login: NextPage = () => {
       axios.post<LoginResponse>('/api/login', {
         name,
         password,
+        newPassword,
       }),
       {
         loading: 'Loading...',
@@ -54,6 +56,11 @@ const Login: NextPage = () => {
     setPassword(e.target.value);
   };
 
+  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setNewPassword(e.target.value);
+  };
+
   return (
     <Layout>
       <Seo templateTitle='Login' />
@@ -78,6 +85,13 @@ const Login: NextPage = () => {
                 name='password'
                 className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
                 onChange={handlePasswordChange}
+              />
+              <label htmlFor='password'>New Password</label>
+              <input
+                type='password'
+                name='password'
+                className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
+                onChange={handleNewPasswordChange}
               />
               <div className='mt-2'>
                 <Button type='submit'>Submit</Button>
