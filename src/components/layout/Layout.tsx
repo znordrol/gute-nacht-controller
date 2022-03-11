@@ -1,3 +1,5 @@
+import PageProgress from '@/components/PageProgress';
+
 let saidHello = false;
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -6,7 +8,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     saidHello = true;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <PageProgress color='#ff9a9a' />
+      {children}
+    </>
+  );
 };
 
 export default Layout;
