@@ -15,7 +15,6 @@ import type { LoginResponse } from '@/pages/api/login';
 import jibril from '../../public/images/jibril.png';
 
 const Login: NextPage = () => {
-  const [name, setName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
 
@@ -25,30 +24,24 @@ const Login: NextPage = () => {
     e.preventDefault();
 
     toast.promise(
-      axios.post<LoginResponse>('/api/login', {
-        name,
+      axios.post<LoginResponse>('/api/change-password', {
         password,
         newPassword,
       }),
       {
         loading: 'Loading...',
         success: () => {
-          setTimeout(() => router.push('/'), 2000);
-          return 'Logged in !, hellooo 🥰🥰!';
+          setTimeout(() => router.push('/login'), 2000);
+          return 'Ganti password berhasil !, login lagi yaa 🥰🥰!';
         },
         error: (err: Error) => {
           if (axios.isAxiosError(err)) {
             return err.response?.data.message ?? err.message;
           }
-          return 'Login failed, who are you 🤔';
+          return 'Yah ganti passwordnya menggagal 😭😭, segera panggil akuu';
         },
       }
     );
-  };
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setName(e.target.value);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,30 +56,23 @@ const Login: NextPage = () => {
 
   return (
     <Layout>
-      <Seo templateTitle='Login' />
+      <Seo templateTitle='Change Password' />
       <main>
         <section className='bg-black text-primary-50'>
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
             <div>
-              <h1 className='mb-4 text-4xl text-primary-300'>Login</h1>
+              <h1 className='mb-4 text-4xl text-primary-300'>Ganti Password</h1>
               <Image src={jibril} alt='Jibril' width={100} height={100} />
             </div>
             <form onSubmit={handleSubmit}>
-              <label htmlFor='name'>Name</label>
-              <input
-                type='text'
-                name='name'
-                className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
-                onChange={handleNameChange}
-              />
-              <label htmlFor='password'>Password</label>
+              <label htmlFor='password'>Password Lama</label>
               <input
                 type='password'
                 name='password'
                 className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
                 onChange={handlePasswordChange}
               />
-              <label htmlFor='password'>New Password</label>
+              <label htmlFor='password'>Password Baru</label>
               <input
                 type='password'
                 name='password'

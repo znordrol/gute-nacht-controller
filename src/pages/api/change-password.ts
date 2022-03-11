@@ -1,11 +1,11 @@
 // pages/api/login.ts
 
-import { compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import httpStatus from 'http-status';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getUser } from '@/lib/fauna';
+import { changePassword, getUser } from '@/lib/fauna';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -32,24 +32,38 @@ export type LoginResponse = {
 export default withIronSessionApiRoute(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const { method } = req;
+    const user = req.session.user;
+
+    if (!user || user?.admin !== true) {
+      return res.status(401).send({ message: 'Unauthorized' });
+    }
 
     switch (method) {
       case 'POST': {
-        const data = await getUser(req.body);
+        const data = await getUser(user);
 
         if (!data || !(await compare(req.body.password, data.data.password))) {
           return res.status(httpStatus.BAD_REQUEST).json({
             status: httpStatus.BAD_REQUEST,
-            message: 'Name or password are invalid, who tf are u',
+            message: 'User or password are invalid, who are u 🤔',
           });
         }
 
-        req.session.user = {
-          id: data.ts,
+        if (!req.body.newPassword) {
+          return res.status(httpStatus.BAD_REQUEST).json({
+            status: httpStatus.BAD_REQUEST,
+            message: 'You must include your new password 🤔',
+          });
+        }
+
+        const newPassword = await hash(req.body.newPassword, 10);
+
+        await changePassword({
           name: data.data.name,
-          admin: data.data.admin,
-        };
-        await req.session.save();
+          newPassword,
+        });
+
+        // req.session.destroy();
         res.send({ ok: true });
         break;
       }
