@@ -18,7 +18,7 @@ const NotFound: NextPage = () => (
               </Accent>
             </h1>
             <h2>Page Not Found</h2>
-            <p>Kamu kesasar, aku kangen</p>
+            <p>Kamu kesasar, aku kangen 🥺</p>
           </div>
 
           <p className='text-xl text-primary-200'>
