@@ -35,6 +35,7 @@ const ChangePassword: NextPage = () => {
 
     axios.delete('/api/ttt');
   };
+  console.log(data?.winner);
 
   return (
     <Layout>
@@ -46,6 +47,18 @@ const ChangePassword: NextPage = () => {
               <h1 className='mb-4 text-4xl text-primary-300'>Tic Tac Toe 💕</h1>
             </div>
 
+            {data?.winner || data?.draw ? (
+              <h2>
+                {data.winner
+                  ? `The winner is ${data.winner} !`
+                  : "It's a draw !"}
+              </h2>
+            ) : (
+              <h2>
+                Player {data?.lastPlay === 'X' ? 'O' : 'X'}
+                {"'"}s turn
+              </h2>
+            )}
             <section className='mx-auto grid h-[454px] w-[454px] grid-cols-3 border-2 border-gray-500'>
               {data?.board.map((row, i) =>
                 row.map((col, j) => (

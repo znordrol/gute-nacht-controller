@@ -34,8 +34,8 @@ const tttHandler = withIronSessionApiRoute(
           .status(httpStatus.UNAUTHORIZED)
           .send({ message: 'Unauthorized' });
       }
-      if (!req.body.x || !req.body.y) {
-        res.status(400).json({ message: 'Give me a coordinate!' });
+      if (req.body === undefined || req.body.y === undefined) {
+        return res.status(400).json({ message: 'Give me a coordinate!' });
       }
 
       const { x, y }: Coordinate = req.body;
