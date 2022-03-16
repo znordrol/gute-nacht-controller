@@ -1,4 +1,4 @@
-export type XO = 'X' | 'O' | undefined;
+export type XO = 'X' | 'O' | '';
 
 export type Board = [[XO, XO, XO], [XO, XO, XO], [XO, XO, XO]];
 
@@ -16,7 +16,8 @@ export type TTT = {
 
 export const isBoardFull = (x: Board) => x.every((y) => y.every((z) => z));
 
-export const newBoard = (): Board => [...Array(3)].map(() => Array(3)) as Board;
+export const newBoard = (): Board =>
+  [...Array(3)].map(() => Array(3).fill('')) as Board;
 
 export const newTtt = (): TTT => ({
   board: newBoard(),
@@ -55,7 +56,24 @@ export const getWinner = (x: Board) => {
 };
 
 export const insertPlay = (x: TTT, c: [number, number]) => {
-  if (x.board[c[0]][c[1]]) return x;
+  if (
+    x.board[c[0]][c[1]] ||
+    c[0] > 2 ||
+    c[1] > 2 ||
+    ['X', 'O', 'DRAW'].includes(getWinner(x.board))
+  )
+    return x;
+
+  const winner = getWinner(x.board);
+  if (['X', 'O', 'DRAW'].includes(winner)) {
+    if (winner === 'DRAW') {
+      x.draw = true;
+      return x;
+    } else if (winner !== 'INCOMPLETE') {
+      x.winner = winner;
+      return x;
+    }
+  }
 
   x.lastPlay = x.lastPlay === 'X' ? 'O' : 'X';
   x.board[c[0]][c[1]] = x.lastPlay;

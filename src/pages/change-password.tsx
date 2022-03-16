@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { withIronSessionSsr } from 'iron-session/next/dist';
+import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';

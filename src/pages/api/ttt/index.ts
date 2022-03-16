@@ -6,6 +6,11 @@ import { COOKIE_NAME } from '@/constant/cookie';
 import { delKey, getValue, setValue } from '@/lib/redis';
 import { Coordinate, insertPlay, newTtt, TTT } from '@/lib/ttt';
 
+export type GetResponse = {
+  message: string;
+  ttt: TTT;
+};
+
 const tttHandler = withIronSessionApiRoute(
   async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'GET') {
@@ -16,7 +21,7 @@ const tttHandler = withIronSessionApiRoute(
           .status(httpStatus.UNAUTHORIZED)
           .send({ message: 'Unauthorized' });
       }
-      const ttt = await getValue<TTT>('ttt');
+      const ttt = (await getValue<TTT>('ttt')) || newTtt();
       res.json({
         message: 'success',
         ttt,
@@ -32,6 +37,7 @@ const tttHandler = withIronSessionApiRoute(
       if (!req.body.x || !req.body.y) {
         res.status(400).json({ message: 'Give me a coordinate!' });
       }
+
       const { x, y }: Coordinate = req.body;
       const ttt: TTT = ((await getValue<TTT>('ttt')) as TTT) || newTtt();
 
