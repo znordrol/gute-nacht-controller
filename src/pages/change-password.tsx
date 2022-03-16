@@ -1,5 +1,6 @@
 import axios from 'axios';
-import type { NextPage } from 'next';
+import { withIronSessionSsr } from 'iron-session/next/dist';
+import type { GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -9,12 +10,13 @@ import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
+import { COOKIE_NAME } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
 import type { LoginResponse } from '@/pages/api/login';
 
 import jibril from '../../public/images/jibril.png';
 
-const Login: NextPage = () => {
+const ChangePassword: NextPage = () => {
   const [password, setPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
 
@@ -107,4 +109,33 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
+  async ({ req }) => {
+    const user = req.session.user;
+
+    if (!user || user?.admin !== true) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {
+        user: req.session.user,
+      },
+    };
+  },
+  {
+    cookieName: COOKIE_NAME,
+    password: process.env.COOKIE_PASS as string,
+    // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
+    cookieOptions: {
+      secure: process.env.NODE_ENV === 'production',
+    },
+  }
+);
+
+export default ChangePassword;

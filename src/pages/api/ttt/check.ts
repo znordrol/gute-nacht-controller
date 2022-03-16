@@ -3,11 +3,10 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { COOKIE_NAME } from '@/constant/cookie';
-import { triggerWorkflow } from '@/lib/github';
 
-const NoGuteNachtHandler = withIronSessionApiRoute(
+const CheckTTT = withIronSessionApiRoute(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method === 'GET') {
+    if (req.method === 'POST') {
       const user = req.session.user;
 
       if (!user || user?.admin !== true) {
@@ -15,12 +14,10 @@ const NoGuteNachtHandler = withIronSessionApiRoute(
           .status(httpStatus.UNAUTHORIZED)
           .send({ message: 'Unauthorized' });
       }
-      await triggerWorkflow({ workflow_id: 'dont_run_today.yml' });
-      res.status(httpStatus.CREATED).send('OK');
+
+      res.status(201).send('OK');
     } else {
-      res
-        .status(httpStatus.METHOD_NOT_ALLOWED)
-        .json({ message: 'Method Not Allowed' });
+      res.status(405).json({ message: 'Method Not Allowed' });
     }
   },
   {
@@ -33,4 +30,4 @@ const NoGuteNachtHandler = withIronSessionApiRoute(
   }
 );
 
-export default NoGuteNachtHandler;
+export default CheckTTT;
