@@ -58,9 +58,6 @@ export const getWinner = (x: Board) => {
 export const insertPlay = (x: TTT, c: [number, number]) => {
   if (x.board[c[0]][c[1]] || c[0] > 2 || c[1] > 2) return x;
 
-  x.lastPlay = x.lastPlay === 'X' ? 'O' : 'X';
-  x.board[c[0]][c[1]] = x.lastPlay;
-
   const winner = getWinner(x.board);
   if (['X', 'O', 'DRAW'].includes(winner.toUpperCase())) {
     if (winner === 'DRAW') {
@@ -68,6 +65,20 @@ export const insertPlay = (x: TTT, c: [number, number]) => {
       return x;
     } else if (winner !== 'INCOMPLETE') {
       x.winner = winner;
+      return x;
+    }
+  }
+
+  x.lastPlay = x.lastPlay === 'X' ? 'O' : 'X';
+  x.board[c[0]][c[1]] = x.lastPlay;
+
+  const postWinner = getWinner(x.board);
+  if (['X', 'O', 'DRAW'].includes(postWinner.toUpperCase())) {
+    if (postWinner === 'DRAW') {
+      x.draw = true;
+      return x;
+    } else if (postWinner !== 'INCOMPLETE') {
+      x.winner = postWinner;
       return x;
     }
   }
