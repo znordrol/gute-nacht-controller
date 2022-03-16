@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import { COOKIE_NAME } from '@/constant/cookie';
 import { getFile, updateFile } from '@/lib/github';
 
 const cronRegex =
@@ -15,7 +16,9 @@ const GuteNachtTime = withIronSessionApiRoute(
       const user = req.session.user;
 
       if (!user || user?.admin !== true) {
-        return res.status(401).send({ message: 'Unauthorized' });
+        return res
+          .status(httpStatus.UNAUTHORIZED)
+          .send({ message: 'Unauthorized' });
       }
       const data = req.body;
       if (!data.time) {
@@ -45,13 +48,15 @@ const GuteNachtTime = withIronSessionApiRoute(
         message: 'api: update gute nacht cron :rocket:',
       });
 
-      res.status(201).send('OK');
+      res.status(httpStatus.CREATED).send('OK');
     } else {
-      res.status(405).json({ message: 'Method Not Allowed' });
+      res
+        .status(httpStatus.METHOD_NOT_ALLOWED)
+        .json({ message: 'Method Not Allowed' });
     }
   },
   {
-    cookieName: 'cookie_ini_khusus_buatmu',
+    cookieName: COOKIE_NAME,
     password: process.env.COOKIE_PASS as string,
     // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
     cookieOptions: {

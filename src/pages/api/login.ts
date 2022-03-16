@@ -5,6 +5,7 @@ import httpStatus from 'http-status';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import { COOKIE_NAME } from '@/constant/cookie';
 import { getUser } from '@/lib/fauna';
 
 declare module 'iron-session' {
@@ -55,11 +56,13 @@ export default withIronSessionApiRoute(
       }
       default:
         res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Method ${method} Not Allowed`);
+        res
+          .status(httpStatus.METHOD_NOT_ALLOWED)
+          .end(`Method ${method} Not Allowed`);
     }
   },
   {
-    cookieName: 'cookie_ini_khusus_buatmu',
+    cookieName: COOKIE_NAME,
     password: process.env.COOKIE_PASS as string,
     // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
     cookieOptions: {
