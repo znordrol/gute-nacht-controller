@@ -38,7 +38,7 @@ const ChangePassword: NextPage = () => {
 
   return (
     <Layout>
-      <Seo templateTitle='Change Password' />
+      <Seo templateTitle='Tic Tac Toe 💕' />
       <main>
         <section className='my-4 text-primary-50'>
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
