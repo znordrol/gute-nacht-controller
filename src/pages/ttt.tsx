@@ -35,7 +35,6 @@ const ChangePassword: NextPage = () => {
 
     axios.delete('/api/ttt');
   };
-  console.log(data?.winner);
 
   return (
     <Layout>
