@@ -2,14 +2,25 @@ export type XO = 'X' | 'O' | undefined;
 
 export type Board = [[XO, XO, XO], [XO, XO, XO], [XO, XO, XO]];
 
+export type Coordinate = {
+  x: number;
+  y: number;
+};
+
 export type TTT = {
   board: Board;
-  lastPlay: XO;
-  winner: XO;
+  lastPlay?: XO;
+  winner?: XO;
   draw?: boolean;
 };
 
 export const isBoardFull = (x: Board) => x.every((y) => y.every((z) => z));
+
+export const newBoard = (): Board => [...Array(3)].map(() => Array(3)) as Board;
+
+export const newTtt = (): TTT => ({
+  board: newBoard(),
+});
 
 export const getWinner = (x: Board) => {
   const winners = new Set<XO>();
@@ -44,7 +55,7 @@ export const getWinner = (x: Board) => {
 };
 
 export const insertPlay = (x: TTT, c: [number, number]) => {
-  if (!x.board[c[0]][c[1]]) return x;
+  if (x.board[c[0]][c[1]]) return x;
 
   x.lastPlay = x.lastPlay === 'X' ? 'O' : 'X';
   x.board[c[0]][c[1]] = x.lastPlay;
