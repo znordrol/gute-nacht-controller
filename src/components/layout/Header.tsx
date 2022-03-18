@@ -2,11 +2,14 @@ import Link from 'next/link';
 
 import UnstyledLink from '@/components/links/UnstyledLink';
 
-const links = [{ href: '/ttt', label: 'Tic Tac Toe' }];
+const links = [
+  { href: '/ttt', label: 'Tic Tac Toe' },
+  { href: '/countdown', label: 'Countdown' },
+];
 
 const Header = (): JSX.Element => {
   return (
-    <nav className='bg-gray-800'>
+    <nav className='bg-neutral-700'>
       <ul className='flex items-center justify-between px-8 py-4'>
         <li>
           <ul className='flex items-center justify-between space-x-8'>
