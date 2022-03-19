@@ -11,7 +11,7 @@ import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
-import { COOKIE_NAME } from '@/constant/cookie';
+import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
 import clsxm from '@/lib/clsxm';
 
@@ -322,14 +322,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  {
-    cookieName: COOKIE_NAME,
-    password: process.env.COOKIE_PASS as string,
-    // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
-    cookieOptions: {
-      secure: process.env.NODE_ENV === 'production',
-    },
-  }
+  COOKIE_OPTIONS
 );
 
 export default Home;

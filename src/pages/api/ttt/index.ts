@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { COOKIE_NAME } from '@/constant/cookie';
+import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { delKey, getValue, setValue } from '@/lib/redis';
 import { Coordinate, insertPlay, newTtt, TTT } from '@/lib/ttt';
 
@@ -63,14 +63,7 @@ const tttHandler = withIronSessionApiRoute(
       res.status(405).json({ message: `Method ${req.method} Not Allowed` });
     }
   },
-  {
-    cookieName: COOKIE_NAME,
-    password: process.env.COOKIE_PASS as string,
-    // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
-    cookieOptions: {
-      secure: process.env.NODE_ENV === 'production',
-    },
-  }
+  COOKIE_OPTIONS
 );
 
 export default tttHandler;

@@ -9,7 +9,7 @@ import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
-import { COOKIE_NAME } from '@/constant/cookie';
+import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
 import { TTT } from '@/lib/ttt';
 
@@ -118,14 +118,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  {
-    cookieName: COOKIE_NAME,
-    password: process.env.COOKIE_PASS as string,
-    // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
-    cookieOptions: {
-      secure: process.env.NODE_ENV === 'production',
-    },
-  }
+  COOKIE_OPTIONS
 );
 
 export default ChangePassword;
