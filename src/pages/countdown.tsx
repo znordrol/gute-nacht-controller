@@ -17,7 +17,9 @@ const HBDCountdown: NextPage = () => {
         <section className='my-4 text-primary-50'>
           <div className='layout flex flex-col items-center justify-center gap-y-40 text-center'>
             <div className='space-y-8'>
-              <h1>Countdown ultah Tia ❤️</h1>
+              <h1>
+                Countdown ultah Tia <span className='text-red-400'>❤️</span>
+              </h1>
               <Counter
                 className='text-2xl md:text-5xl'
                 endDate={new Date(2022, 10, 2, 11, 0, 0)}
