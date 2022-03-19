@@ -3,6 +3,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
+import Accent from '@/components/Accent';
 import Counter from '@/components/Counter';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
@@ -18,7 +19,9 @@ const HBDCountdown: NextPage = () => {
           <div className='layout flex flex-col items-center justify-center gap-y-40 text-center'>
             <div className='space-y-8'>
               <h1>
-                Countdown ultah Tia <span className='text-red-400'>❤️</span>
+                <Accent>
+                  Countdown ultah Tia <span className='text-red-400'>❤️</span>
+                </Accent>
               </h1>
               <Counter
                 className='text-2xl md:text-5xl'

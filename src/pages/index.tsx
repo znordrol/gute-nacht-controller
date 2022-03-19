@@ -7,6 +7,7 @@ import { Fragment, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { FiChevronDown } from 'react-icons/fi';
 
+import Accent from '@/components/Accent';
 import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
 import UnstyledLink from '@/components/links/UnstyledLink';
@@ -140,7 +141,9 @@ const Home: NextPage = () => {
           <div className='layout min-h-screen space-y-10 py-10'>
             <div className='space-y-8'>
               <div className='flex'>
-                <h1>Halooo {'<3'}</h1>
+                <Accent>
+                  <h1>Halooo {'<3'}</h1>
+                </Accent>
                 <aside className='absolute left-[85%] z-10'>
                   <Menu as='div' className='relative inline-block text-left'>
                     <div>
