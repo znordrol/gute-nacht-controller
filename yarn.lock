@@ -3507,10 +3507,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-next-sitemap@^2.5.10:
-  version "2.5.10"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-2.5.10.tgz#6b4aa7aebb745ef3b3b17dcef859e87043c3b0af"
-  integrity sha512-9jFvViLL2US0obp6NAGlEpE4gWU5NACupHvVFtLhOhgJ33M/vBPqEgCiZQsG9dKDhZXchjrjQrtDvhk/KZBekg==
+next-sitemap@^2.5.13:
+  version "2.5.13"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-2.5.13.tgz#d7ac297130274abbdc90c4206f903ae73c8f6b1e"
+  integrity sha512-MIIqXdabDLj086OwP2MQmpk90KR7Sxup8DWxkDQBD2KZhml/ds2vulCv7sZptpuVjXckCufoMSsP+JjMdr2cSw==
   dependencies:
     "@corex/deepmerge" "^2.6.148"
     minimist "^1.2.5"
@@ -4528,10 +4528,10 @@ swr@^1.2.2:
   resolved "https://registry.yarnpkg.com/swr/-/swr-1.2.2.tgz#6cae09928d30593a7980d80f85823e57468fac5d"
   integrity sha512-ky0BskS/V47GpW8d6RU7CPsr6J8cr7mQD6+do5eky3bM0IyJaoi3vO8UhvrzJaObuTlGhPl2szodeB2dUd76Xw==
 
-tailwind-merge@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.2.0.tgz#6e425cf4e379e3620285b99ccab96abb11befdf2"
-  integrity sha512-XIY4LRLOdOYX6dN+tHlb3K6YE+uxxz9hqDciByQT6dlO4+clDGO6Rl0a4atNdxLpbDIZQFBSxS4r/4/xOKRKkA==
+tailwind-merge@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.2.1.tgz#a9a10f7ac54cb79cfa14268f1fecbb0248e08acc"
+  integrity sha512-kWfy/u91XoE408Kb42HQd1krdiZjw2sbSWjE1C/lXXXsbK+6dhTpnd37DHrwNP6ofKj5/HKXlY/jTjPYgPxSsw==
   dependencies:
     hashlru "^2.3.0"
 
