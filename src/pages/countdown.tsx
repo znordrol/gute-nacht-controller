@@ -1,6 +1,8 @@
 import { Tab } from '@headlessui/react';
 import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import Accent from '@/components/Accent';
@@ -13,15 +15,33 @@ import { toastStyle } from '@/constant/toast';
 import clsxm from '@/lib/clsxm';
 
 const tabs = ['HBD <3', 'Anniv ❤️'];
+const queryTab = ['hbd', 'anniv'];
 
 const Countdown: NextPage = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const { tab } = router.query;
+    for (let i = 0; i < queryTab.length; ++i) {
+      if (tab === queryTab[i]) {
+        setSelectedIndex(i);
+        return;
+      }
+    }
+  }, [router.isReady, router.query]);
+
   return (
     <Layout>
-      <Seo templateTitle='HBD Tia 💕 Countdown' />
+      <Seo templateTitle='💕 Countdown for Tia' />
       <main>
         <section className='my-4 text-primary-50'>
           <div className='layout flex flex-col items-center justify-center gap-y-10 text-center'>
-            <Tab.Group>
+            <Tab.Group
+              selectedIndex={selectedIndex}
+              onChange={setSelectedIndex}
+            >
               <Tab.List className='flex space-x-1 rounded-xl bg-blue-900/20 p-1'>
                 {tabs.map((tab) => (
                   <Tab
