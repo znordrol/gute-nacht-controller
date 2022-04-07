@@ -8,3 +8,13 @@ export type UserRes = {
   data: User;
   ts: number;
 };
+
+export type CanvasData = {
+  name: string;
+  saveData: string;
+};
+
+export type CanvasDataRes = {
+  data: CanvasData;
+  ts: number;
+};

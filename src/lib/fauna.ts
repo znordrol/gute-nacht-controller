@@ -1,6 +1,6 @@
 import faunadb, { query as q } from 'faunadb';
 
-import type { User, UserRes } from '@/types/fauna';
+import type { CanvasDataRes, User, UserRes } from '@/types/fauna';
 
 const faunaClient = new faunadb.Client({
   secret: process.env.FAUNA_SECRET as string,
@@ -51,4 +51,45 @@ export const changePassword = async ({
   } catch (e) {
     console.log(e);
   }
+};
+
+export type SaveCanvasOptions = {
+  name: string;
+  saveData: string;
+};
+
+export const saveCanvas = async ({ name, saveData }: SaveCanvasOptions) => {
+  const result: CanvasDataRes | null =
+    await faunaClient.query<CanvasDataRes | null>(
+      q.Let(
+        {
+          canvasRef: q.Match(q.Index('get_canvas_by_name'), name),
+          canvasExists: q.Exists(q.Var('canvasRef')),
+        },
+        q.If(
+          q.Var('canvasExists'),
+          q.Update(q.Select(['ref'], q.Get(q.Var('canvasRef'))), {
+            data: { saveData },
+          }),
+          q.Create(q.Collection('canvas'), { data: { name, saveData } })
+        )
+      )
+    );
+
+  return result;
+};
+
+export const getCanvas = async (name: string) => {
+  const data: CanvasDataRes | null =
+    await faunaClient.query<CanvasDataRes | null>(
+      q.Let(
+        {
+          canvasRef: q.Match(q.Index('get_canvas_by_name'), name),
+          canvasExists: q.Exists(q.Var('canvasRef')),
+        },
+        q.If(q.Var('canvasExists'), q.Get(q.Var('canvasRef')), null)
+      )
+    );
+
+  return data;
 };

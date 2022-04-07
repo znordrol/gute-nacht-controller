@@ -15,7 +15,7 @@ import { TTT } from '@/lib/ttt';
 
 const fetcherTTT = (url: string) => axios.get(url).then((res) => res.data.ttt);
 
-const ChangePassword: NextPage = () => {
+const TicTacToe: NextPage = () => {
   const { data } = useSWR<TTT>('/api/ttt', fetcherTTT, {
     refreshInterval: 1000,
   });
@@ -121,4 +121,4 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
   COOKIE_OPTIONS
 );
 
-export default ChangePassword;
+export default TicTacToe;
