@@ -2,7 +2,7 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { COOKIE_OPTIONS } from '@/constant/cookie';
-import { saveCanvas } from '@/lib/fauna';
+import { getCanvas, getCanvases, saveCanvas } from '@/lib/fauna';
 
 const CanvasHandler = withIronSessionApiRoute(
   async (req: NextApiRequest, res: NextApiResponse) => {
@@ -21,6 +21,15 @@ const CanvasHandler = withIronSessionApiRoute(
       }
       await saveCanvas({ name, saveData });
       res.status(201).send('OK');
+    } else if (req.method === 'GET') {
+      const { name } = req.query;
+      if (!name) {
+        const canvases = await getCanvases();
+        res.json({ canvases });
+      } else {
+        const canvas = await getCanvas(name.toString());
+        res.json({ canvas });
+      }
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }

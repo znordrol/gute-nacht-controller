@@ -4,33 +4,42 @@ import type { GetServerSideProps, NextPage } from 'next';
 import React, { useEffect, useRef, useState } from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import { Toaster } from 'react-hot-toast';
+import useSWR from 'swr';
 
 import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
+import { CanvasDataRes } from '@/types/fauna';
+
+const fetcherCanvas = (url: string) => axios.get(url).then((res) => res.data);
 
 const Canvas: NextPage = () => {
+  const { data } = useSWR<{ canvases: CanvasDataRes[] }>(
+    '/api/canvas',
+    fetcherCanvas
+  );
+
   const canvasRef = useRef<CanvasDraw>(null);
 
   const [saveData, setSaveData] = useState<string>();
   const [name, setName] = useState<string>();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setSaveData(localStorage.getItem('savedDrawing') ?? undefined);
+    if (data) {
+      setSaveData(data.canvases[0].data.saveData ?? undefined);
     }
-  }, []);
+  }, [data]);
 
   return (
     <Layout>
-      <Seo templateTitle='Tic Tac Toe 💕' />
+      <Seo templateTitle='Canvas 💕' />
       <main>
         <section className='my-4 text-primary-50'>
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
             <div>
-              <h1 className='mb-4 text-4xl text-primary-300'>Tic Tac Toe 💕</h1>
+              <h1 className='mb-4 text-4xl text-primary-300'>Canvas 💕</h1>
             </div>
             <input
               type='text'

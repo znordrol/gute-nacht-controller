@@ -17,4 +17,21 @@ export type CanvasData = {
 export type CanvasDataRes = {
   data: CanvasData;
   ts: number;
+  id: string;
+};
+
+export type CanvasDataResRaw = {
+  data: CanvasData;
+  ts: number;
+  ref: {
+    id: string;
+  };
+};
+
+export type AllCanvasRes = {
+  data: CanvasDataRes[];
+};
+
+export type AllCanvasResRaw = {
+  data: CanvasDataResRaw[];
 };
