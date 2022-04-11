@@ -1,6 +1,12 @@
 import faunadb, { query as q } from 'faunadb';
 
-import type { CanvasDataRes, User, UserRes } from '@/types/fauna';
+import type {
+  AllCanvasResRaw,
+  CanvasDataRes,
+  CanvasDataResRaw,
+  User,
+  UserRes,
+} from '@/types/fauna';
 
 const faunaClient = new faunadb.Client({
   secret: process.env.FAUNA_SECRET as string,
@@ -92,4 +98,21 @@ export const getCanvas = async (name: string) => {
     );
 
   return data;
+};
+
+export const getCanvases = async (): Promise<CanvasDataRes[]> => {
+  const { data } = await faunaClient.query<AllCanvasResRaw>(
+    q.Map(
+      q.Paginate(q.Documents(q.Collection('canvas'))),
+      q.Lambda((x) => q.Get(x))
+    )
+  );
+
+  return data.map((datum) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { ref: _ref, ...newDatum } = datum as CanvasDataRes &
+      CanvasDataResRaw;
+    newDatum.id = datum.ref.id;
+    return newDatum;
+  });
 };
