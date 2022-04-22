@@ -24,11 +24,12 @@ const Canvas: NextPage = () => {
   const canvasRef = useRef<CanvasDraw>(null);
 
   const [saveData, setSaveData] = useState<string>();
-  const [name, setName] = useState<string>();
+  const [name, setName] = useState<string>('');
 
   useEffect(() => {
     if (data) {
       setSaveData(data.canvases[0].data.saveData ?? undefined);
+      setName(data.canvases[0].data.name ?? undefined);
     }
   }, [data]);
 
@@ -46,6 +47,7 @@ const Canvas: NextPage = () => {
               name='name'
               className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
               onChange={(e) => setName(e.target.value)}
+              defaultValue={name}
             />
             <CanvasDraw ref={canvasRef} saveData={saveData} />
             <Button
