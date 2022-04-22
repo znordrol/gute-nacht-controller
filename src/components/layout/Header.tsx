@@ -5,13 +5,14 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 const links = [
   { href: '/ttt', label: 'Tic Tac Toe' },
   { href: '/countdown', label: 'Countdown' },
+  { href: '/particles', label: 'Particles' },
 ];
 
 const Header = (): JSX.Element => {
   return (
     <nav className='bg-neutral-700'>
       <ul className='flex items-center justify-between px-8 py-4'>
-        <li>
+        <li className='z-10'>
           <ul className='flex items-center justify-between space-x-8'>
             <li>
               <Link href='/'>
@@ -22,7 +23,7 @@ const Header = (): JSX.Element => {
             </li>
           </ul>
         </li>
-        <li>
+        <li className='z-10'>
           <ul className='flex items-center justify-between space-x-4'>
             {links.map(({ href, label }) => (
               <li key={`${href}${label}`}>
