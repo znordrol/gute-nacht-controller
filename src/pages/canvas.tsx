@@ -1,12 +1,15 @@
-import { Listbox } from '@headlessui/react';
+import { Listbox, Switch } from '@headlessui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
+import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
 import type { GetServerSideProps, NextPage } from 'next';
 import React, { useEffect, useRef, useState } from 'react';
-import CanvasDraw from 'react-canvas-draw';
+import CanvasDraw, { MyCanvasDraw } from 'react-canvas-draw';
+import { SketchPicker } from 'react-color';
 import { Toaster } from 'react-hot-toast';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { HiSelector } from 'react-icons/hi';
+import { Range } from 'react-range';
 import useSWR from 'swr';
 
 import Button from '@/components/buttons/Button';
@@ -18,17 +21,60 @@ import { CanvasDataRes } from '@/types/fauna';
 
 const fetcherCanvas = (url: string) => axios.get(url).then((res) => res.data);
 
+declare module 'react-canvas-draw' {
+  class MyCanvasDraw extends CanvasDraw {
+    ctx: {
+      drawing: {
+        globalCompositeOperation: string;
+      };
+    };
+
+    getDataURL(
+      fileType?: string,
+      useBgImage?: boolean,
+      backgroundColor?: string
+    ): string;
+  }
+}
+
 const Canvas: NextPage = () => {
   const { data, mutate } = useSWR<{ canvases: CanvasDataRes[] }>(
     '/api/canvas',
     fetcherCanvas
   );
 
-  const canvasRef = useRef<CanvasDraw>(null);
+  const canvasRef = useRef<MyCanvasDraw>(null);
 
   const [canvas, setCanvas] = useState<CanvasDataRes>();
   const [canvases, setCanvases] = useState<CanvasDataRes[]>();
   const [name, setName] = useState<string>('');
+  const [color, setColor] = useState<string>('#000');
+  const [erase, setErase] = useState<boolean>(false);
+  const [brushRadius, setBrushRadius] = useState<number>(12);
+
+  const toggleErase = (value: boolean) => {
+    if (canvasRef?.current) {
+      if (
+        canvasRef.current.ctx.drawing.globalCompositeOperation ===
+        'destination-out'
+      ) {
+        canvasRef.current.ctx.drawing.globalCompositeOperation = 'source-over';
+      } else {
+        canvasRef.current.ctx.drawing.globalCompositeOperation =
+          'destination-out';
+      }
+      setErase(value);
+    }
+  };
+
+  const getImage = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    const imgUrl = canvasRef?.current?.getDataURL();
+    if (!imgUrl) return;
+    const newTab = window.open();
+    if (!newTab) return;
+    newTab.document.body.innerHTML = `<img src="${imgUrl}">`;
+  };
 
   useEffect(() => {
     if (data) {
@@ -105,11 +151,68 @@ const Canvas: NextPage = () => {
             />
             <CanvasDraw
               ref={canvasRef}
-              saveData={canvas?.data.saveData}
+              saveData={
+                canvas?.data.saveData &&
+                (decompressFromUTF16(canvas.data.saveData) as string)
+              }
               immediateLoading
               canvasHeight={800}
               canvasWidth={800}
+              hideGrid
+              brushColor={erase ? '#fff' : color}
+              brushRadius={brushRadius}
             />
+            <SketchPicker
+              disableAlpha
+              color={color}
+              onChangeComplete={(color) => setColor(color.hex)}
+            />
+            <Range
+              step={1}
+              min={1}
+              max={80}
+              values={[brushRadius]}
+              onChange={(values) => setBrushRadius(values[0])}
+              renderTrack={({ props, children }) => (
+                <div
+                  {...props}
+                  style={{
+                    ...props.style,
+                    height: '6px',
+                    width: '100%',
+                    backgroundColor: '#ccc',
+                  }}
+                >
+                  {children}
+                </div>
+              )}
+              renderThumb={({ props }) => (
+                <div
+                  {...props}
+                  style={{
+                    ...props.style,
+                    height: '42px',
+                    width: '42px',
+                    backgroundColor: '#999',
+                  }}
+                />
+              )}
+            />
+            <p>Brush Size</p>
+            <Switch
+              checked={erase}
+              onChange={toggleErase}
+              className={`${erase ? 'bg-primary-300' : 'bg-gray-400'}
+                relative inline-flex h-[38px] w-[74px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+            >
+              <span className='sr-only'>Erase</span>
+              <span
+                aria-hidden='true'
+                className={`${erase ? 'translate-x-9' : 'translate-x-0'}
+                  pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+              />
+            </Switch>
+            <p>Erase Mode</p>
             <Button
               onClick={async (e) => {
                 e.preventDefault();
@@ -118,7 +221,7 @@ const Canvas: NextPage = () => {
                 saveData &&
                   (await axios.post('/api/canvas', {
                     name: name || canvas?.data.name,
-                    saveData,
+                    saveData: compressToUTF16(saveData),
                   }));
                 mutate();
               }}
@@ -133,6 +236,7 @@ const Canvas: NextPage = () => {
             >
               Clear
             </Button>
+            <Button onClick={getImage}>Export Image</Button>
           </div>
         </section>
       </main>
