@@ -104,12 +104,12 @@ const Canvas: NextPage = () => {
                       />
                     </span>
                   </Listbox.Button>
-                  <Listbox.Options className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                  <Listbox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
                     {canvases?.map((canvas) => (
                       <Listbox.Option
                         key={canvas.id}
                         className={({ active }) =>
-                          `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                          `relative z-10 cursor-default select-none py-2 pl-10 pr-4 ${
                             active
                               ? 'bg-violet-500 text-white'
                               : 'text-gray-100'

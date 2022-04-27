@@ -1,4 +1,5 @@
 import { Tab } from '@headlessui/react';
+import { lastDayOfMonth } from 'date-fns';
 import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -7,7 +8,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Accent from '@/components/Accent';
 import AnimatedL from '@/components/AnimatedL';
-import Counter from '@/components/Counter';
+import Counter, { getAnnualCountdownDate } from '@/components/Counter';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
@@ -71,7 +72,9 @@ const Countdown: NextPage = () => {
                     </h1>
                     <Counter
                       className='text-2xl md:text-5xl'
-                      endDate={new Date(2022, 10, 2, 11, 0, 0)}
+                      endDate={getAnnualCountdownDate(
+                        new Date(new Date().getFullYear(), 10, 2, 11, 0, 0)
+                      )}
                     />
                   </div>
                   <div className='space-y-8'>
@@ -80,7 +83,9 @@ const Countdown: NextPage = () => {
                     </h2>
                     <Counter
                       className='text-sm md:text-3xl'
-                      endDate={new Date(2022, 11, 8, 0, 0, 0)}
+                      endDate={getAnnualCountdownDate(
+                        new Date(new Date().getFullYear(), 11, 8, 0, 0, 0)
+                      )}
                     />
                   </div>
                 </Tab.Panel>
@@ -99,8 +104,33 @@ const Countdown: NextPage = () => {
                     />
                     <Counter
                       className='text-3xl md:text-5xl'
-                      endDate={new Date(2023, 2, 30, 0, 0, 0)}
+                      endDate={getAnnualCountdownDate(
+                        new Date(new Date().getFullYear(), 2, 30, 0, 0, 0)
+                      )}
                     />
+                    <div className='space-y-8'>
+                      <h2 className='mt-20'>
+                        <Accent>
+                          <span className='text-red-400'>❤️</span> Mensiversary{' '}
+                          <span className='text-red-400'>❤️</span>
+                        </Accent>
+                      </h2>
+                      <Counter
+                        className='text-xl md:text-3xl'
+                        endDate={
+                          new Date(
+                            new Date().getFullYear(),
+                            new Date().getMonth(),
+                            new Date().getMonth() === 1
+                              ? lastDayOfMonth(new Date()).getDate()
+                              : 30,
+                            0,
+                            0,
+                            0
+                          )
+                        }
+                      />
+                    </div>
                   </div>
                 </Tab.Panel>
               </Tab.Panels>

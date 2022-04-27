@@ -1,4 +1,4 @@
-import { intervalToDuration } from 'date-fns';
+import { add, intervalToDuration, isAfter, isWithinInterval } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import clsxm from '@/lib/clsxm';
@@ -13,6 +13,15 @@ const calculateTimeLeft = (endDate: Date) =>
     end: endDate,
   });
 
+export const isADayAfter = (dDay: Date) =>
+  isWithinInterval(new Date(), {
+    start: dDay,
+    end: add(dDay, { days: 1 }),
+  });
+
+export const getAnnualCountdownDate = (d: Date) =>
+  isAfter(new Date(), add(d, { days: 1 })) ? add(d, { years: 1 }) : d;
+
 const Counter = ({ className, endDate }: CounterType) => {
   const [timeLeft, setTimeLeft] = useState<Duration>(
     calculateTimeLeft(endDate)
@@ -25,6 +34,18 @@ const Counter = ({ className, endDate }: CounterType) => {
 
     return () => clearTimeout(timer);
   });
+
+  if (isADayAfter(endDate)) {
+    return (
+      <h2 className={clsxm('space-x-4 text-5xl', className)}>
+        <span>0 Bulan</span>
+        <span>0 Hari</span>
+        <span>0 Jam</span>
+        <span>0 Menit</span>
+        <span>0 Detik</span>
+      </h2>
+    );
+  }
 
   return (
     <h2 className={clsxm('space-x-4 text-5xl', className)}>
