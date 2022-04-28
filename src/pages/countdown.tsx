@@ -8,11 +8,17 @@ import { Toaster } from 'react-hot-toast';
 
 import Accent from '@/components/Accent';
 import AnimatedL from '@/components/AnimatedL';
-import Counter, { getAnnualCountdownDate } from '@/components/Counter';
+import Confettia from '@/components/Confettia';
+import Counter, {
+  getAnnualCountdownDate,
+  getMonthlyCountdownDate,
+  isADayAfter,
+} from '@/components/Counter';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
+import useWindowFocus from '@/hooks/useWindowFocus';
 import clsxm from '@/lib/clsxm';
 
 const tabs = ['HBD <3', 'Anniv ❤️'];
@@ -21,6 +27,23 @@ const queryTab = ['hbd', 'anniv'];
 const Countdown: NextPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
+  const [hbdTia, hbdAku, anniv, mensive] = [
+    new Date(new Date().getFullYear(), 10, 2, 11, 0, 0),
+    new Date(new Date().getFullYear(), 11, 8, 0, 0, 0),
+    new Date(new Date().getFullYear(), 2, 30, 0, 0, 0),
+    new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getMonth() === 1 ? lastDayOfMonth(new Date()).getDate() : 30,
+      0,
+      0,
+      0
+    ),
+  ];
+
+  const fireConfettia = [hbdTia, hbdAku, anniv, mensive].some((a) =>
+    isADayAfter(a)
+  );
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -33,12 +56,15 @@ const Countdown: NextPage = () => {
     }
   }, [router.isReady, router.query]);
 
+  const windowFocused = useWindowFocus();
+
   return (
     <Layout>
       <Seo templateTitle='💕 Countdown for Tia' />
       <main>
         <section className='my-4 text-primary-50'>
           <div className='layout flex flex-col items-center justify-center gap-y-10 text-center'>
+            {fireConfettia && windowFocused && <Confettia />}
             <Tab.Group
               selectedIndex={selectedIndex}
               onChange={setSelectedIndex}
@@ -72,9 +98,7 @@ const Countdown: NextPage = () => {
                     </h1>
                     <Counter
                       className='text-2xl md:text-5xl'
-                      endDate={getAnnualCountdownDate(
-                        new Date(new Date().getFullYear(), 10, 2, 11, 0, 0)
-                      )}
+                      endDate={getAnnualCountdownDate(hbdTia)}
                     />
                   </div>
                   <div className='space-y-8'>
@@ -83,9 +107,7 @@ const Countdown: NextPage = () => {
                     </h2>
                     <Counter
                       className='text-sm md:text-3xl'
-                      endDate={getAnnualCountdownDate(
-                        new Date(new Date().getFullYear(), 11, 8, 0, 0, 0)
-                      )}
+                      endDate={getAnnualCountdownDate(hbdAku)}
                     />
                   </div>
                 </Tab.Panel>
@@ -104,9 +126,7 @@ const Countdown: NextPage = () => {
                     />
                     <Counter
                       className='text-3xl md:text-5xl'
-                      endDate={getAnnualCountdownDate(
-                        new Date(new Date().getFullYear(), 2, 30, 0, 0, 0)
-                      )}
+                      endDate={getAnnualCountdownDate(anniv)}
                     />
                     <div className='space-y-8'>
                       <h2 className='mt-20'>
@@ -117,18 +137,7 @@ const Countdown: NextPage = () => {
                       </h2>
                       <Counter
                         className='text-xl md:text-3xl'
-                        endDate={
-                          new Date(
-                            new Date().getFullYear(),
-                            new Date().getMonth(),
-                            new Date().getMonth() === 1
-                              ? lastDayOfMonth(new Date()).getDate()
-                              : 30,
-                            0,
-                            0,
-                            0
-                          )
-                        }
+                        endDate={getMonthlyCountdownDate(mensive)}
                       />
                     </div>
                   </div>
