@@ -1,9 +1,15 @@
 import Confetti from 'react-confetti';
 import { useScrollbarWidth, useWindowScroll, useWindowSize } from 'react-use';
 
+const randomIntFromInterval = (min: number, max: number) => {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
 const drawHeart = (ctx: CanvasRenderingContext2D) => {
-  const w = 12,
-    h = 12;
+  const sz = randomIntFromInterval(12, 20);
+  const w = sz;
+  const h = sz;
   const d = Math.min(w, h);
   const k = 0;
   ctx.beginPath();
