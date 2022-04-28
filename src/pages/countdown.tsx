@@ -8,7 +8,11 @@ import { Toaster } from 'react-hot-toast';
 
 import Accent from '@/components/Accent';
 import AnimatedL from '@/components/AnimatedL';
-import Counter, { getAnnualCountdownDate } from '@/components/Counter';
+import Confettia from '@/components/Confetti';
+import Counter, {
+  getAnnualCountdownDate,
+  isADayAfter,
+} from '@/components/Counter';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
@@ -21,6 +25,23 @@ const queryTab = ['hbd', 'anniv'];
 const Countdown: NextPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
+  const [hbdTia, hbdAku, anniv, mensive] = [
+    new Date(new Date().getFullYear(), 10, 2, 11, 0, 0),
+    new Date(new Date().getFullYear(), 11, 8, 0, 0, 0),
+    new Date(new Date().getFullYear(), 2, 30, 0, 0, 0),
+    new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getMonth() === 1 ? lastDayOfMonth(new Date()).getDate() : 30,
+      0,
+      0,
+      0
+    ),
+  ];
+
+  const fireConfettia = [hbdTia, hbdAku, anniv, mensive].some((a) =>
+    isADayAfter(a)
+  );
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -39,6 +60,7 @@ const Countdown: NextPage = () => {
       <main>
         <section className='my-4 text-primary-50'>
           <div className='layout flex flex-col items-center justify-center gap-y-10 text-center'>
+            {fireConfettia && <Confettia />}
             <Tab.Group
               selectedIndex={selectedIndex}
               onChange={setSelectedIndex}
