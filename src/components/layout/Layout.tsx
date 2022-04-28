@@ -1,11 +1,12 @@
 import Header from '@/components/layout/Header';
 import PageProgress from '@/components/PageProgress';
+import sayHello from '@/lib/sayHello';
 
 let saidHello = false;
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   if (!saidHello) {
-    // sayHello();
+    sayHello();
     saidHello = true;
   }
 

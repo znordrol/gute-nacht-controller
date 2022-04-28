@@ -22,6 +22,7 @@ const Home: NextPage = () => {
   const [yesGnLoading, setYesGnLoading] = useState<boolean>(false);
   const [gnTimeLoading, setGnTimeLoading] = useState<boolean>(false);
   const [gnTime, setGnTime] = useState<string>('23:00');
+  const [loveClick, setLoveClick] = useState<number>(0);
 
   const router = useRouter();
 
@@ -133,6 +134,15 @@ const Home: NextPage = () => {
     });
   };
 
+  const handleEasterEgg = () => {
+    if (loveClick === 9) {
+      alert('Heyooo, I love you to the moon and back 🤟');
+      setLoveClick(0);
+    } else {
+      setLoveClick(loveClick + 1);
+    }
+  };
+
   return (
     <Layout>
       <Seo />
@@ -158,6 +168,7 @@ const Home: NextPage = () => {
                           'hover:bg-primary-500 hover:text-primary-50',
                           'active:bg-primary-600'
                         )}
+                        onClick={handleEasterEgg}
                       >
                         Akun
                         <FiChevronDown className='text-2xl' />
