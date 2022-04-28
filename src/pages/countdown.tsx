@@ -11,6 +11,7 @@ import AnimatedL from '@/components/AnimatedL';
 import Confettia from '@/components/Confetti';
 import Counter, {
   getAnnualCountdownDate,
+  getMonthlyCountdownDate,
   isADayAfter,
 } from '@/components/Counter';
 import Layout from '@/components/layout/Layout';
@@ -94,9 +95,7 @@ const Countdown: NextPage = () => {
                     </h1>
                     <Counter
                       className='text-2xl md:text-5xl'
-                      endDate={getAnnualCountdownDate(
-                        new Date(new Date().getFullYear(), 10, 2, 11, 0, 0)
-                      )}
+                      endDate={getAnnualCountdownDate(hbdTia)}
                     />
                   </div>
                   <div className='space-y-8'>
@@ -105,9 +104,7 @@ const Countdown: NextPage = () => {
                     </h2>
                     <Counter
                       className='text-sm md:text-3xl'
-                      endDate={getAnnualCountdownDate(
-                        new Date(new Date().getFullYear(), 11, 8, 0, 0, 0)
-                      )}
+                      endDate={getAnnualCountdownDate(hbdAku)}
                     />
                   </div>
                 </Tab.Panel>
@@ -126,9 +123,7 @@ const Countdown: NextPage = () => {
                     />
                     <Counter
                       className='text-3xl md:text-5xl'
-                      endDate={getAnnualCountdownDate(
-                        new Date(new Date().getFullYear(), 2, 30, 0, 0, 0)
-                      )}
+                      endDate={getAnnualCountdownDate(anniv)}
                     />
                     <div className='space-y-8'>
                       <h2 className='mt-20'>
@@ -139,18 +134,7 @@ const Countdown: NextPage = () => {
                       </h2>
                       <Counter
                         className='text-xl md:text-3xl'
-                        endDate={
-                          new Date(
-                            new Date().getFullYear(),
-                            new Date().getMonth(),
-                            new Date().getMonth() === 1
-                              ? lastDayOfMonth(new Date()).getDate()
-                              : 30,
-                            0,
-                            0,
-                            0
-                          )
-                        }
+                        endDate={getMonthlyCountdownDate(mensive)}
                       />
                     </div>
                   </div>

@@ -22,6 +22,9 @@ export const isADayAfter = (dDay: Date) =>
 export const getAnnualCountdownDate = (d: Date) =>
   isAfter(new Date(), add(d, { days: 1 })) ? add(d, { years: 1 }) : d;
 
+export const getMonthlyCountdownDate = (d: Date) =>
+  isAfter(new Date(), add(d, { days: 1 })) ? add(d, { months: 1 }) : d;
+
 const Counter = ({ className, endDate }: CounterType) => {
   const [timeLeft, setTimeLeft] = useState<Duration>(
     calculateTimeLeft(endDate)
