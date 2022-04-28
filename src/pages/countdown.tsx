@@ -8,7 +8,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Accent from '@/components/Accent';
 import AnimatedL from '@/components/AnimatedL';
-import Confettia from '@/components/Confetti';
+import Confettia from '@/components/Confettia';
 import Counter, {
   getAnnualCountdownDate,
   getMonthlyCountdownDate,
@@ -33,7 +33,7 @@ const Countdown: NextPage = () => {
     new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
-      new Date().getMonth() === 1 ? lastDayOfMonth(new Date()).getDate() : 30,
+      new Date().getMonth() === 1 ? lastDayOfMonth(new Date()).getDate() : 28,
       0,
       0,
       0
