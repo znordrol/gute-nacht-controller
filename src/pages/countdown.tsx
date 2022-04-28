@@ -18,6 +18,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
+import useWindowFocus from '@/hooks/useWindowFocus';
 import clsxm from '@/lib/clsxm';
 
 const tabs = ['HBD <3', 'Anniv ❤️'];
@@ -33,7 +34,7 @@ const Countdown: NextPage = () => {
     new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
-      new Date().getMonth() === 1 ? lastDayOfMonth(new Date()).getDate() : 28,
+      new Date().getMonth() === 1 ? lastDayOfMonth(new Date()).getDate() : 30,
       0,
       0,
       0
@@ -55,13 +56,15 @@ const Countdown: NextPage = () => {
     }
   }, [router.isReady, router.query]);
 
+  const windowFocused = useWindowFocus();
+
   return (
     <Layout>
       <Seo templateTitle='💕 Countdown for Tia' />
       <main>
         <section className='my-4 text-primary-50'>
           <div className='layout flex flex-col items-center justify-center gap-y-10 text-center'>
-            {fireConfettia && <Confettia />}
+            {fireConfettia && windowFocused && <Confettia />}
             <Tab.Group
               selectedIndex={selectedIndex}
               onChange={setSelectedIndex}
