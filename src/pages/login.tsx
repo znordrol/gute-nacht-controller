@@ -55,7 +55,7 @@ const Login: NextPage = () => {
   };
 
   return (
-    <Layout>
+    <Layout hewwo={false}>
       <Seo templateTitle='Login' />
       <main>
         <section className='bg-black text-primary-50'>
