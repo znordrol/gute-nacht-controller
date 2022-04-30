@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
@@ -13,6 +13,7 @@ import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
 import type { LoginResponse } from '@/pages/api/login';
+import { ErrorResponse } from '@/types/api';
 
 import jibril from '../../public/images/jibril.png';
 
@@ -36,7 +37,7 @@ const ChangePassword: NextPage = () => {
           setTimeout(() => router.push('/login'), 2000);
           return 'Ganti password berhasil !, login lagi yaa 🥰🥰!';
         },
-        error: (err: Error) => {
+        error: (err: Error | AxiosError<ErrorResponse>) => {
           if (axios.isAxiosError(err)) {
             return err.response?.data.message ?? err.message;
           }

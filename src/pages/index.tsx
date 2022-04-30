@@ -1,5 +1,5 @@
 import { Menu } from '@headlessui/react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -15,6 +15,7 @@ import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
 import clsxm from '@/lib/clsxm';
+import { ErrorResponse } from '@/types/api';
 
 const Home: NextPage = () => {
   const [gnLoading, setGnLoading] = useState<boolean>(false);
@@ -37,7 +38,7 @@ const Home: NextPage = () => {
         success: () => {
           return 'Bentar lagi kekirim good nightnya 🌝😴🥰';
         },
-        error: (err: Error) => {
+        error: (err: Error | AxiosError<ErrorResponse>) => {
           if (axios.isAxiosError(err)) {
             return err.response?.data.message ?? err.message;
           }
@@ -60,7 +61,7 @@ const Home: NextPage = () => {
         success: () => {
           return 'Good nightnya dicancel :(( 😭😭';
         },
-        error: (err: Error) => {
+        error: (err: Error | AxiosError<ErrorResponse>) => {
           if (axios.isAxiosError(err)) {
             return err.response?.data.message ?? err.message;
           }
@@ -83,7 +84,7 @@ const Home: NextPage = () => {
         success: () => {
           return 'Good night buat ntar malem  🥰';
         },
-        error: (err: Error) => {
+        error: (err: Error | AxiosError<ErrorResponse>) => {
           if (axios.isAxiosError(err)) {
             return err.response?.data.message ?? err.message;
           }
@@ -106,7 +107,7 @@ const Home: NextPage = () => {
         success: () => {
           return 'Waktu good nightnya udh keganti yayy 😊';
         },
-        error: (err: Error) => {
+        error: (err: Error | AxiosError<ErrorResponse>) => {
           if (axios.isAxiosError(err)) {
             return err.response?.data.message ?? err.message;
           }
@@ -125,7 +126,7 @@ const Home: NextPage = () => {
         setTimeout(() => router.push('/login'), 2000);
         return 'Logged out !, will miss you 😭';
       },
-      error: (err: Error) => {
+      error: (err: Error | AxiosError<ErrorResponse>) => {
         if (axios.isAxiosError(err)) {
           return err.response?.data.message ?? err.message;
         }

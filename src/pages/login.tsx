@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -11,6 +11,7 @@ import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
 import type { LoginResponse } from '@/pages/api/login';
+import { ErrorResponse } from '@/types/api';
 
 import jibril from '../../public/images/jibril.png';
 
@@ -34,7 +35,7 @@ const Login: NextPage = () => {
           setTimeout(() => router.push('/'), 2000);
           return 'Logged in !, hellooo 🥰🥰!';
         },
-        error: (err: Error) => {
+        error: (err: Error | AxiosError<ErrorResponse>) => {
           if (axios.isAxiosError(err)) {
             return err.response?.data.message ?? err.message;
           }
