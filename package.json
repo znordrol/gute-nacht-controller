@@ -3,21 +3,22 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap",
-    "export": "next export",
-    "start": "next start",
-    "deduplicate": "npx yarn-deduplicate && yarn install",
-    "lint": "next lint",
-    "lint:fix": "eslint src --fix && yarn format",
-    "lint:strict": "eslint --max-warnings=0 src",
-    "tsc": "tsc --pretty --noEmit --incremental false",
-    "format": "prettier -w .",
-    "format:check": "prettier -c .",
     "cy": "cypress open",
     "cy:headless": "cypress run",
-    "prepare": "husky install"
+    "deduplicate": "npx yarn-deduplicate && yarn install",
+    "dev": "next dev",
+    "export": "next export",
+    "format": "prettier -w .",
+    "format:check": "prettier -c .",
+    "lint": "next lint",
+    "lint:fix": "eslint src --fix && yarn format",
+    "lint:package": "sort-package-json",
+    "lint:strict": "eslint --max-warnings=0 src",
+    "prepare": "husky install",
+    "start": "next start",
+    "tsc": "tsc --pretty --noEmit --incremental false"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.0",
@@ -77,6 +78,7 @@
     "postcss": "^8.4.13",
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.10",
+    "sort-package-json": "^1.57.0",
     "tailwindcss": "^3.0.24",
     "typescript": "4.6.4"
   }
