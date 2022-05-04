@@ -1,9 +1,9 @@
-import { Menu } from '@headlessui/react';
+import { Menu, Transition } from '@headlessui/react';
 import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { FiChevronDown } from 'react-icons/fi';
 
@@ -175,38 +175,48 @@ const Home: NextPage = () => {
                         <FiChevronDown className='text-2xl' />
                       </Menu.Button>
                     </div>
-                    <Menu.Items className='absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-gray-700 shadow-lg ring-1 ring-light ring-opacity-5 focus:outline-none'>
-                      <div className='px-1 py-1 '>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <UnstyledLink
-                              href='/change-password'
-                              className={`${
-                                active
-                                  ? 'bg-violet-500 text-white'
-                                  : 'text-gray-100'
-                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                            >
-                              Ganti Password
-                            </UnstyledLink>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              className={`${
-                                active
-                                  ? 'bg-violet-500 text-white'
-                                  : 'text-gray-100'
-                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                              onClick={handleLogout}
-                            >
-                              Log Out
-                            </button>
-                          )}
-                        </Menu.Item>
-                      </div>
-                    </Menu.Items>
+                    <Transition
+                      as={Fragment}
+                      enter='transition ease-out duration-100'
+                      enterFrom='transform opacity-0 scale-95'
+                      enterTo='transform opacity-100 scale-100'
+                      leave='transition ease-in duration-75'
+                      leaveFrom='transform opacity-100 scale-100'
+                      leaveTo='transform opacity-0 scale-95'
+                    >
+                      <Menu.Items className='absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-gray-700 shadow-lg ring-1 ring-light ring-opacity-5 focus:outline-none'>
+                        <div className='px-1 py-1'>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <UnstyledLink
+                                href='/change-password'
+                                className={`${
+                                  active
+                                    ? 'bg-violet-500 text-white'
+                                    : 'text-gray-100'
+                                } group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors`}
+                              >
+                                Ganti Password
+                              </UnstyledLink>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                className={`${
+                                  active
+                                    ? 'bg-violet-500 text-white'
+                                    : 'text-gray-100'
+                                } group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors`}
+                                onClick={handleLogout}
+                              >
+                                Log Out
+                              </button>
+                            )}
+                          </Menu.Item>
+                        </div>
+                      </Menu.Items>
+                    </Transition>
                   </Menu>
                 </aside>
               </div>

@@ -1,9 +1,9 @@
-import { Listbox, Switch } from '@headlessui/react';
+import { Listbox, Switch, Transition } from '@headlessui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
 import type { GetServerSideProps, NextPage } from 'next';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import CanvasDraw, { MyCanvasDraw } from 'react-canvas-draw';
 import { SketchPicker } from 'react-color';
 import { Toaster } from 'react-hot-toast';
@@ -95,7 +95,7 @@ const Canvas: NextPage = () => {
             <div className='w-72'>
               <Listbox value={canvas} onChange={setCanvas}>
                 <div className='relative mt-1'>
-                  <Listbox.Button className='relative w-full cursor-default rounded-lg bg-gray-600 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
+                  <Listbox.Button className='relative w-full cursor-default rounded-lg bg-gray-600 py-2 pl-3 pr-10 text-left shadow-md transition-colors hover:bg-gray-500 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
                     <span className='block truncate'>{canvas?.data.name}</span>
                     <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
                       <HiSelector
@@ -104,41 +104,51 @@ const Canvas: NextPage = () => {
                       />
                     </span>
                   </Listbox.Button>
-                  <Listbox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-                    {canvases?.map((canvas) => (
-                      <Listbox.Option
-                        key={canvas.id}
-                        className={({ active }) =>
-                          `relative z-10 cursor-default select-none py-2 pl-10 pr-4 ${
-                            active
-                              ? 'bg-violet-500 text-white'
-                              : 'text-gray-100'
-                          }`
-                        }
-                        value={canvas}
-                      >
-                        {({ selected }) => (
-                          <>
-                            <span
-                              className={`block truncate ${
-                                selected ? 'font-medium' : 'font-normal'
-                              }`}
-                            >
-                              {canvas.data.name}
-                            </span>
-                            {selected ? (
-                              <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600'>
-                                <AiOutlineCheck
-                                  className='h-5 w-5'
-                                  aria-hidden='true'
-                                />
+                  <Transition
+                    as={Fragment}
+                    enter='transition ease-in duration-100'
+                    enterFrom='opacity-0'
+                    enterTo='opacity-100'
+                    leave='transition ease-in duration-100'
+                    leaveFrom='opacity-100'
+                    leaveTo='opacity-0'
+                  >
+                    <Listbox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                      {canvases?.map((canvas) => (
+                        <Listbox.Option
+                          key={canvas.id}
+                          className={({ active }) =>
+                            `relative z-10 cursor-default select-none py-2 pl-10 pr-4 transition-colors duration-150 ${
+                              active
+                                ? 'bg-violet-500 text-white'
+                                : 'text-gray-100'
+                            }`
+                          }
+                          value={canvas}
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={`block truncate ${
+                                  selected ? 'font-medium' : 'font-normal'
+                                }`}
+                              >
+                                {canvas.data.name}
                               </span>
-                            ) : null}
-                          </>
-                        )}
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
+                              {selected ? (
+                                <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600'>
+                                  <AiOutlineCheck
+                                    className='h-5 w-5'
+                                    aria-hidden='true'
+                                  />
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
                 </div>
               </Listbox>
             </div>

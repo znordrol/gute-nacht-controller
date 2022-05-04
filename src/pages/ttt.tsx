@@ -62,7 +62,7 @@ const TicTacToe: NextPage = () => {
               {data?.board.map((row, i) =>
                 row.map((col, j) => (
                   <div
-                    className='flex h-[150px] w-[150px] cursor-pointer select-none items-center justify-center border border-gray-500 bg-slate-300 text-8xl text-black hover:bg-primary-50'
+                    className='flex h-[150px] w-[150px] cursor-pointer select-none items-center justify-center border border-gray-500 bg-slate-300 text-8xl text-black transition-colors hover:bg-primary-50'
                     key={`${col}${i}${j}`}
                     onClick={(e) => handlePlay(e, i, j)}
                   >

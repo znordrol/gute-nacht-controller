@@ -75,7 +75,7 @@ const Countdown: NextPage = () => {
                     key={tab}
                     className={({ selected }) =>
                       clsxm(
-                        'w-24 rounded-lg py-2.5 text-sm font-medium leading-5 text-red-700',
+                        'w-24 rounded-lg py-2.5 text-sm font-medium leading-5 text-red-700 transition-all duration-300',
                         'ring-white ring-opacity-60 ring-offset-2 ring-offset-rose-400 focus:outline-none focus:ring-2',
                         selected
                           ? 'bg-gray-300 shadow'
