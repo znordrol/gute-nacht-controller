@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 import Button from '@/components/buttons/Button';
+import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
@@ -69,17 +70,17 @@ const ChangePassword: NextPage = () => {
             </div>
             <form onSubmit={handleSubmit}>
               <label htmlFor='password'>Password Lama</label>
-              <input
+              <StyledInput
                 type='password'
                 name='password'
-                className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
+                className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
                 onChange={handlePasswordChange}
               />
               <label htmlFor='password'>Password Baru</label>
-              <input
+              <StyledInput
                 type='password'
                 name='password'
-                className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
+                className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
                 onChange={handleNewPasswordChange}
               />
               <div className='mt-2'>

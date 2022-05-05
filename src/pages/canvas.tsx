@@ -13,6 +13,7 @@ import { Range } from 'react-range';
 import useSWR from 'swr';
 
 import Button from '@/components/buttons/Button';
+import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
@@ -147,10 +148,10 @@ const Canvas: NextPage = () => {
                 </div>
               </Listbox>
             </div>
-            <input
+            <StyledInput
               type='text'
               name='name'
-              className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-300 p-2 dark:bg-gray-900'
+              className='mb-4 block w-1/3 rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
               onChange={(e) => setName(e.target.value)}
               defaultValue={canvas?.data.name}
             />

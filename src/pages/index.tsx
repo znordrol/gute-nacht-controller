@@ -9,6 +9,7 @@ import { FiChevronDown } from 'react-icons/fi';
 
 import Accent from '@/components/Accent';
 import Button from '@/components/buttons/Button';
+import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
@@ -282,10 +283,10 @@ const Home: NextPage = () => {
               <h3>Ganti waktu good nightnya</h3>
               <p>Delaynya +- 30 menit -{'>'} 1 jam</p>
               <form onSubmit={handleGnTime}>
-                <input
+                <StyledInput
                   type='time'
                   value={gnTime}
-                  className='form-control'
+                  className='form-control w-1/3 border-2'
                   placeholder='Time'
                   onChange={(e) => setGnTime(e.target.value)}
                 />
