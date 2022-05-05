@@ -191,11 +191,12 @@ const Home: NextPage = () => {
                             {({ active }) => (
                               <UnstyledLink
                                 href='/change-password'
-                                className={`${
+                                className={clsxm(
                                   active
                                     ? 'bg-violet-500 text-white'
-                                    : 'text-dark dark:text-gray-100'
-                                } group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors`}
+                                    : 'text-dark dark:text-gray-100',
+                                  'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors'
+                                )}
                               >
                                 Ganti Password
                               </UnstyledLink>
@@ -204,11 +205,12 @@ const Home: NextPage = () => {
                           <Menu.Item>
                             {({ active }) => (
                               <button
-                                className={`${
+                                className={clsxm(
                                   active
                                     ? 'bg-violet-500 text-white'
-                                    : 'text-dark dark:text-gray-100'
-                                } group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors`}
+                                    : 'text-dark dark:text-gray-100',
+                                  'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors'
+                                )}
                                 onClick={handleLogout}
                               >
                                 Log Out
