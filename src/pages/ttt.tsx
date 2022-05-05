@@ -40,7 +40,7 @@ const TicTacToe: NextPage = () => {
     <Layout>
       <Seo templateTitle='Tic Tac Toe 💕' />
       <main>
-        <section className='my-4 text-primary-50'>
+        <section className='my-4'>
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
             <div>
               <h1 className='mb-4 text-4xl text-primary-300'>Tic Tac Toe 💕</h1>

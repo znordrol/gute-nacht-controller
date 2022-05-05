@@ -59,7 +59,7 @@ const Login: NextPage = () => {
     <Layout hewwo={false}>
       <Seo templateTitle='Login' />
       <main>
-        <section className='bg-black text-primary-50'>
+        <section className=''>
           <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
             <div>
               <h1 className='mb-4 text-4xl text-primary-300'>Login</h1>
@@ -70,14 +70,14 @@ const Login: NextPage = () => {
               <input
                 type='text'
                 name='name'
-                className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
+                className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-300 p-2 dark:bg-gray-900'
                 onChange={handleNameChange}
               />
               <label htmlFor='password'>Password</label>
               <input
                 type='password'
                 name='password'
-                className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
+                className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-300 p-2 dark:bg-gray-900'
                 onChange={handlePasswordChange}
               />
               <div className='mt-2'>

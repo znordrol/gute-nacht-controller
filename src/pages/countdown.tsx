@@ -62,7 +62,7 @@ const Countdown: NextPage = () => {
     <Layout>
       <Seo templateTitle='💕 Countdown for Tia' />
       <main>
-        <section className='my-4 text-primary-50'>
+        <section className='my-4'>
           <div className='layout flex flex-col items-center justify-center gap-y-10 text-center'>
             {fireConfettia && windowFocused && <Confettia />}
             <Tab.Group
@@ -79,7 +79,7 @@ const Countdown: NextPage = () => {
                         'ring-white ring-opacity-60 ring-offset-2 ring-offset-rose-400 focus:outline-none focus:ring-2',
                         selected
                           ? 'bg-gray-300 shadow'
-                          : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                          : 'text-dark hover:bg-white/[0.12] hover:text-white dark:text-blue-100'
                       )
                     }
                   >

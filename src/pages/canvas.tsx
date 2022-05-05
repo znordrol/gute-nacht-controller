@@ -95,13 +95,10 @@ const Canvas: NextPage = () => {
             <div className='w-72'>
               <Listbox value={canvas} onChange={setCanvas}>
                 <div className='relative mt-1'>
-                  <Listbox.Button className='relative w-full cursor-default rounded-lg bg-gray-600 py-2 pl-3 pr-10 text-left shadow-md transition-colors hover:bg-gray-500 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm'>
+                  <Listbox.Button className='relative w-full cursor-default rounded-lg bg-gray-300 py-2 pl-3 pr-10 text-left shadow-md transition-colors hover:bg-gray-400 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 dark:bg-gray-600 dark:hover:bg-gray-500 sm:text-sm'>
                     <span className='block truncate'>{canvas?.data.name}</span>
                     <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
-                      <HiSelector
-                        className='h-5 w-5 text-gray-400'
-                        aria-hidden='true'
-                      />
+                      <HiSelector className='h-5 w-5' aria-hidden='true' />
                     </span>
                   </Listbox.Button>
                   <Transition
@@ -113,15 +110,13 @@ const Canvas: NextPage = () => {
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
                   >
-                    <Listbox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                    <Listbox.Options className='absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-gray-300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700 sm:text-sm'>
                       {canvases?.map((canvas) => (
                         <Listbox.Option
                           key={canvas.id}
                           className={({ active }) =>
                             `relative z-10 cursor-default select-none py-2 pl-10 pr-4 transition-colors duration-150 ${
-                              active
-                                ? 'bg-violet-500 text-white'
-                                : 'text-gray-100'
+                              active ? 'bg-violet-300 dark:bg-violet-500' : ''
                             }`
                           }
                           value={canvas}
@@ -155,7 +150,7 @@ const Canvas: NextPage = () => {
             <input
               type='text'
               name='name'
-              className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-900 p-2'
+              className='mb-4 block rounded-lg border-2 border-primary-300 bg-gray-300 p-2 dark:bg-gray-900'
               onChange={(e) => setName(e.target.value)}
               defaultValue={canvas?.data.name}
             />
