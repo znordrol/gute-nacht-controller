@@ -16,6 +16,7 @@ import Counter, {
 } from '@/components/Counter';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
+import Tooltip from '@/components/Tooltip';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
 import useWindowFocus from '@/hooks/useWindowFocus';
@@ -92,8 +93,10 @@ const Countdown: NextPage = () => {
                   <div className='space-y-8'>
                     <h1>
                       <Accent>
-                        Countdown ultah Tia{' '}
-                        <span className='text-red-400'>❤️</span>
+                        Countdown ultah{' '}
+                        <Tooltip interactive content='I ❤️ You'>
+                          Tia <span className='text-red-400'>❤️</span>
+                        </Tooltip>
                       </Accent>
                     </h1>
                     <Counter
