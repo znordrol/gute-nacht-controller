@@ -286,7 +286,7 @@ const Home: NextPage = () => {
                 <StyledInput
                   type='time'
                   value={gnTime}
-                  className='form-control w-1/3 border-2'
+                  className='form-control w-1/3 border-2 bg-gray-200'
                   placeholder='Time'
                   onChange={(e) => setGnTime(e.target.value)}
                 />
