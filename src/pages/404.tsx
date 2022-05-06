@@ -13,9 +13,7 @@ const NotFound: NextPage = () => (
         <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-40 text-center'>
           <div className='flex flex-col gap-y-4'>
             <h1 className='text-8xl'>
-              <Accent className='from-primary-300 via-primary-100/70 to-primary-400'>
-                404
-              </Accent>
+              <Accent className=''>404</Accent>
             </h1>
             <h2>Page Not Found</h2>
             <p>Kamu kesasar, aku kangen 🥺</p>
