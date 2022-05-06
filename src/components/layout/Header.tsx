@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
 import UnstyledLink from '@/components/links/UnstyledLink';
@@ -13,12 +12,6 @@ const links = [
 
 const Header = (): JSX.Element => {
   const { theme, setTheme } = useTheme();
-
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
 
   return (
     <nav className='bg-gray-300 dark:bg-neutral-700'>
@@ -47,7 +40,7 @@ const Header = (): JSX.Element => {
         <li className='z-10'>
           <ul className='flex items-center justify-between space-x-4'>
             <li>
-              {loaded && <ColorModeToggle value={theme} onChange={setTheme} />}
+              <ColorModeToggle value={theme} onChange={setTheme} />
             </li>
           </ul>
         </li>
