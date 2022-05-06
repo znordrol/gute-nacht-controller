@@ -7,7 +7,7 @@ type Props = {
   buttonClassName?: string;
   className?: string;
   iconClassName?: string;
-  value: 'dark' | 'light';
+  value?: 'dark' | 'light';
   onChange: (v: 'dark' | 'light') => void;
 };
 
