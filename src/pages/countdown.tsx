@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Accent from '@/components/Accent';
 import AnimatedL from '@/components/AnimatedL';
+import AnimatePage from '@/components/AnimatePage';
 import Confettia from '@/components/Confettia';
 import Counter, {
   getAnnualCountdownDate,
@@ -62,94 +63,97 @@ const Countdown: NextPage = () => {
   return (
     <Layout>
       <Seo templateTitle='💕 Countdown for Tia' />
-      <main>
-        <section className='my-4'>
-          <div className='layout flex flex-col items-center justify-center gap-y-10 text-center'>
-            {fireConfettia && windowFocused && <Confettia />}
-            <Tab.Group
-              selectedIndex={selectedIndex}
-              onChange={setSelectedIndex}
-            >
-              <Tab.List className='flex space-x-1 rounded-xl bg-blue-900/20 p-1'>
-                {tabs.map((tab) => (
-                  <Tab
-                    key={tab}
-                    className={({ selected }) =>
-                      clsxm(
-                        'w-24 rounded-lg py-2.5 text-sm font-medium leading-5 text-red-700 transition-all duration-300',
-                        'ring-white ring-opacity-60 ring-offset-2 ring-offset-rose-400 focus:outline-none focus:ring-2',
-                        selected
-                          ? 'bg-gray-300 shadow'
-                          : 'text-dark hover:bg-white/[0.12] hover:text-white dark:text-blue-100'
-                      )
-                    }
-                  >
-                    {tab}
-                  </Tab>
-                ))}
-              </Tab.List>
-              <Tab.Panels>
-                <Tab.Panel className='flex flex-col items-center justify-center gap-y-40 text-center'>
-                  <div className='space-y-8'>
-                    <h1>
-                      <Accent>
-                        Countdown ultah{' '}
-                        <Tooltip interactive content='I ❤️ You'>
-                          Tia <span className='text-red-400'>❤️</span>
-                        </Tooltip>
-                      </Accent>
-                    </h1>
-                    <Counter
-                      className='text-2xl md:text-5xl'
-                      endDate={getAnnualCountdownDate(hbdTia)}
-                    />
-                  </div>
-                  <div className='space-y-8'>
-                    <h2 className='text-lg md:text-xl'>
-                      Ini punyaku seh wkwk gausah diliat
-                    </h2>
-                    <Counter
-                      className='text-sm md:text-3xl'
-                      endDate={getAnnualCountdownDate(hbdAku)}
-                    />
-                  </div>
-                </Tab.Panel>
-                <Tab.Panel className='flex flex-col items-center justify-center gap-y-40 text-center'>
-                  <div className='mb-12 flex flex-col items-center justify-center space-y-8 text-center'>
-                    <h1>
-                      <Accent>
-                        <span className='text-red-400'>❤️</span> Countdown Anniv
-                        kyta <span className='text-red-400'>❤️</span>
-                      </Accent>
-                    </h1>
-                    <h2>30 Maret 2022</h2>
-                    <AnimatedL
-                      d='m188 171.61c-89.237-163.62-178.47 38.5 0 144.38 178.47-105.88 89.24-308 0-144.38z'
-                      stroke='#f00'
-                    />
-                    <Counter
-                      className='text-3xl md:text-5xl'
-                      endDate={getAnnualCountdownDate(anniv)}
-                    />
+      <AnimatePage>
+        <main>
+          <section className='my-4'>
+            <div className='layout flex flex-col items-center justify-center gap-y-10 text-center'>
+              {fireConfettia && windowFocused && <Confettia />}
+              <Tab.Group
+                selectedIndex={selectedIndex}
+                onChange={setSelectedIndex}
+              >
+                <Tab.List className='flex space-x-1 rounded-xl bg-blue-900/20 p-1'>
+                  {tabs.map((tab) => (
+                    <Tab
+                      key={tab}
+                      className={({ selected }) =>
+                        clsxm(
+                          'w-24 rounded-lg py-2.5 text-sm font-medium leading-5 text-red-700 transition-all duration-300',
+                          'ring-white ring-opacity-60 ring-offset-2 ring-offset-rose-400 focus:outline-none focus:ring-2',
+                          selected
+                            ? 'bg-gray-300 shadow'
+                            : 'text-dark hover:bg-white/[0.12] hover:text-white dark:text-blue-100'
+                        )
+                      }
+                    >
+                      {tab}
+                    </Tab>
+                  ))}
+                </Tab.List>
+                <Tab.Panels>
+                  <Tab.Panel className='flex flex-col items-center justify-center gap-y-40 text-center'>
                     <div className='space-y-8'>
-                      <h2 className='mt-20'>
+                      <h1>
                         <Accent>
-                          <span className='text-red-400'>❤️</span> Mensiversary{' '}
-                          <span className='text-red-400'>❤️</span>
+                          Countdown ultah{' '}
+                          <Tooltip interactive content='I ❤️ You'>
+                            Tia <span className='text-red-400'>❤️</span>
+                          </Tooltip>
                         </Accent>
-                      </h2>
+                      </h1>
                       <Counter
-                        className='text-xl md:text-3xl'
-                        endDate={getMonthlyCountdownDate(mensive)}
+                        className='text-2xl md:text-5xl'
+                        endDate={getAnnualCountdownDate(hbdTia)}
                       />
                     </div>
-                  </div>
-                </Tab.Panel>
-              </Tab.Panels>
-            </Tab.Group>
-          </div>
-        </section>
-      </main>
+                    <div className='space-y-8'>
+                      <h2 className='text-lg md:text-xl'>
+                        Ini punyaku seh wkwk gausah diliat
+                      </h2>
+                      <Counter
+                        className='text-sm md:text-3xl'
+                        endDate={getAnnualCountdownDate(hbdAku)}
+                      />
+                    </div>
+                  </Tab.Panel>
+                  <Tab.Panel className='flex flex-col items-center justify-center gap-y-40 text-center'>
+                    <div className='mb-12 flex flex-col items-center justify-center space-y-8 text-center'>
+                      <h1>
+                        <Accent>
+                          <span className='text-red-400'>❤️</span> Countdown
+                          Anniv kyta <span className='text-red-400'>❤️</span>
+                        </Accent>
+                      </h1>
+                      <h2>30 Maret 2022</h2>
+                      <AnimatedL
+                        d='m188 171.61c-89.237-163.62-178.47 38.5 0 144.38 178.47-105.88 89.24-308 0-144.38z'
+                        stroke='#f00'
+                      />
+                      <Counter
+                        className='text-3xl md:text-5xl'
+                        endDate={getAnnualCountdownDate(anniv)}
+                      />
+                      <div className='space-y-8'>
+                        <h2 className='mt-20'>
+                          <Accent>
+                            <span className='text-red-400'>❤️</span>{' '}
+                            Mensiversary{' '}
+                            <span className='text-red-400'>❤️</span>
+                          </Accent>
+                        </h2>
+                        <Counter
+                          className='text-xl md:text-3xl'
+                          endDate={getMonthlyCountdownDate(mensive)}
+                        />
+                      </div>
+                    </div>
+                  </Tab.Panel>
+                </Tab.Panels>
+              </Tab.Group>
+            </div>
+          </section>
+        </main>
+      </AnimatePage>
       <Toaster
         toastOptions={{
           style: toastStyle,

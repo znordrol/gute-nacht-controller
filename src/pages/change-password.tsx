@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
+import AnimatePage from '@/components/AnimatePage';
 import Button from '@/components/buttons/Button';
 import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
@@ -61,41 +62,45 @@ const ChangePassword: NextPage = () => {
   return (
     <Layout>
       <Seo templateTitle='Change Password' />
-      <main>
-        <section className='bg-black text-primary-50'>
-          <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
-            <div>
-              <h1 className='mb-4 text-4xl text-primary-300'>Ganti Password</h1>
-              <Image src={jibril} alt='Jibril' width={100} height={100} />
-            </div>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor='password'>Password Lama</label>
-              <StyledInput
-                type='password'
-                name='password'
-                className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
-                onChange={handlePasswordChange}
-              />
-              <label htmlFor='password'>Password Baru</label>
-              <StyledInput
-                type='password'
-                name='password'
-                className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
-                onChange={handleNewPasswordChange}
-              />
-              <div className='mt-2'>
-                <Button type='submit'>Submit</Button>
+      <AnimatePage>
+        <main>
+          <section className='bg-black text-primary-50'>
+            <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
+              <div>
+                <h1 className='mb-4 text-4xl text-primary-300'>
+                  Ganti Password
+                </h1>
+                <Image src={jibril} alt='Jibril' width={100} height={100} />
               </div>
-            </form>
+              <form onSubmit={handleSubmit}>
+                <label htmlFor='password'>Password Lama</label>
+                <StyledInput
+                  type='password'
+                  name='password'
+                  className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  onChange={handlePasswordChange}
+                />
+                <label htmlFor='password'>Password Baru</label>
+                <StyledInput
+                  type='password'
+                  name='password'
+                  className='mb-4 block rounded-lg border-2 bg-gray-300 p-2 dark:bg-gray-900'
+                  onChange={handleNewPasswordChange}
+                />
+                <div className='mt-2'>
+                  <Button type='submit'>Submit</Button>
+                </div>
+              </form>
 
-            <p className='text-xl text-primary-200'>
-              <ArrowLink href='/' openNewTab={false} direction='left'>
-                Back To Home
-              </ArrowLink>
-            </p>
-          </div>
-        </section>
-      </main>
+              <p className='text-xl text-primary-200'>
+                <ArrowLink href='/' openNewTab={false} direction='left'>
+                  Back To Home
+                </ArrowLink>
+              </p>
+            </div>
+          </section>
+        </main>
+      </AnimatePage>
       <Toaster
         toastOptions={{
           style: toastStyle,

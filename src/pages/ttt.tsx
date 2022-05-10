@@ -5,6 +5,7 @@ import React from 'react';
 import { Toaster } from 'react-hot-toast';
 import useSWR from 'swr';
 
+import AnimatePage from '@/components/AnimatePage';
 import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -39,51 +40,55 @@ const TicTacToe: NextPage = () => {
   return (
     <Layout>
       <Seo templateTitle='Tic Tac Toe 💕' />
-      <main>
-        <section className='my-4'>
-          <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
-            <div>
-              <h1 className='mb-4 text-4xl text-primary-300'>Tic Tac Toe 💕</h1>
-            </div>
+      <AnimatePage>
+        <main>
+          <section className='my-4'>
+            <div className='layout flex min-h-screen flex-col items-center justify-center gap-y-12 text-center'>
+              <div>
+                <h1 className='mb-4 text-4xl text-primary-300'>
+                  Tic Tac Toe 💕
+                </h1>
+              </div>
 
-            {data?.winner || data?.draw ? (
-              <h2>
-                {data.winner
-                  ? `The winner is ${data.winner} !`
-                  : "It's a draw !"}
-              </h2>
-            ) : (
-              <h2>
-                Player {data?.lastPlay === 'X' ? 'O' : 'X'}
-                {"'"}s turn
-              </h2>
-            )}
-            <section className='mx-auto grid h-[454px] w-[454px] grid-cols-3 border-2 border-gray-500'>
-              {data?.board.map((row, i) =>
-                row.map((col, j) => (
-                  <div
-                    className='flex h-[150px] w-[150px] cursor-pointer select-none items-center justify-center border border-gray-500 bg-slate-300 text-8xl text-black transition-colors hover:bg-primary-50'
-                    key={`${col}${i}${j}`}
-                    onClick={(e) => handlePlay(e, i, j)}
-                  >
-                    {col}
-                  </div>
-                ))
+              {data?.winner || data?.draw ? (
+                <h2>
+                  {data.winner
+                    ? `The winner is ${data.winner} !`
+                    : "It's a draw !"}
+                </h2>
+              ) : (
+                <h2>
+                  Player {data?.lastPlay === 'X' ? 'O' : 'X'}
+                  {"'"}s turn
+                </h2>
               )}
-            </section>
+              <section className='mx-auto grid h-[454px] w-[454px] grid-cols-3 border-2 border-gray-500'>
+                {data?.board.map((row, i) =>
+                  row.map((col, j) => (
+                    <div
+                      className='flex h-[150px] w-[150px] cursor-pointer select-none items-center justify-center border border-gray-500 bg-slate-300 text-8xl text-black transition-colors hover:bg-primary-50'
+                      key={`${col}${i}${j}`}
+                      onClick={(e) => handlePlay(e, i, j)}
+                    >
+                      {col}
+                    </div>
+                  ))
+                )}
+              </section>
 
-            <div className='mt-2'>
-              <Button onClick={handleReset}>Reset</Button>
+              <div className='mt-2'>
+                <Button onClick={handleReset}>Reset</Button>
+              </div>
+
+              <p className='text-xl text-primary-200'>
+                <ArrowLink href='/' openNewTab={false} direction='left'>
+                  Back To Home
+                </ArrowLink>
+              </p>
             </div>
-
-            <p className='text-xl text-primary-200'>
-              <ArrowLink href='/' openNewTab={false} direction='left'>
-                Back To Home
-              </ArrowLink>
-            </p>
-          </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </AnimatePage>
       <Toaster
         toastOptions={{
           style: toastStyle,
