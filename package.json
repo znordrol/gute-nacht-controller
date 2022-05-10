@@ -62,7 +62,7 @@
     "@types/node": "17.0.31",
     "@types/nprogress": "^0.2.0",
     "@types/react": "18.0.9",
-    "@types/react-canvas-draw": "^1.1.1",
+    "@types/react-canvas-draw": "^1.2.0",
     "@types/react-color": "^3.0.6",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
