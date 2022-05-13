@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 
 import axios from 'axios';
+import { AnimatePresence } from 'framer-motion';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import NextNProgress from 'nextjs-progressbar';
@@ -25,7 +26,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           fetcher: (url) => axios.get(url).then((res) => res.data),
         }}
       >
-        <Component {...pageProps} />
+        <AnimatePresence
+          exitBeforeEnter
+          initial={false}
+          onExitComplete={() => window.scrollTo(0, 0)}
+        >
+          <Component {...pageProps} />
+        </AnimatePresence>
       </SWRConfig>
     </ThemeProvider>
   );
