@@ -6,7 +6,7 @@ import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
 
 const NotFound: NextPage = () => (
-  <Layout>
+  <Layout hewwo={false}>
     <Seo templateTitle='Not Found' />
     <main>
       <section className=''>

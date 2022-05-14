@@ -59,7 +59,7 @@ const ChangePassword: NextPage = () => {
   };
 
   return (
-    <Layout>
+    <Layout trueFooter>
       <Seo templateTitle='Change Password' />
       <AnimatePage>
         <main>

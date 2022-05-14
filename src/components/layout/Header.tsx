@@ -3,6 +3,7 @@ import { useTheme } from 'next-themes';
 
 import ColorModeToggle from '@/components/ColorModeToggle';
 import UnstyledLink from '@/components/links/UnstyledLink';
+import PageProgress from '@/components/PageProgress';
 
 const links = [
   { href: '/ttt', label: 'Tic Tac Toe' },
@@ -15,6 +16,7 @@ const Header = (): JSX.Element => {
 
   return (
     <nav className='bg-gray-300 dark:bg-neutral-700'>
+      <PageProgress color='#ff9a9a' />
       <ul className='flex items-center justify-between px-8 py-4'>
         <li className='z-10'>
           <ul className='flex items-center justify-between space-x-8'>

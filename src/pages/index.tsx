@@ -147,7 +147,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <Layout>
+    <Layout trueFooter>
       <Seo />
       <AnimatePage>
         <main>

@@ -61,7 +61,7 @@ const Countdown: NextPage = () => {
   const windowFocused = useWindowFocus();
 
   return (
-    <Layout>
+    <Layout trueFooter>
       <Seo templateTitle='💕 Countdown for Tia' />
       <AnimatePage>
         <main>
