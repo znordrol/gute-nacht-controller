@@ -14,8 +14,7 @@ import Seo from '@/components/Seo';
 import { toastStyle } from '@/constant/toast';
 import type { LoginResponse } from '@/pages/api/login';
 import { ErrorResponse } from '@/types/api';
-
-import jibril from '../../public/images/jibril.png';
+import jibril from '~/images/jibril.png';
 
 const Login: NextPage = () => {
   const [name, setName] = useState<string>('');
