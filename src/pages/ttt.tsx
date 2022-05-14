@@ -38,7 +38,7 @@ const TicTacToe: NextPage = () => {
   };
 
   return (
-    <Layout>
+    <Layout trueFooter>
       <Seo templateTitle='Tic Tac Toe 💕' />
       <AnimatePage>
         <main>

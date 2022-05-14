@@ -1,26 +1,31 @@
+import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import PageProgress from '@/components/PageProgress';
 import sayHello from '@/lib/sayHello';
 
 type LayoutProps = {
   children: React.ReactNode;
   hewwo?: boolean;
+  trueFooter?: boolean;
 };
 
 let saidHello = false;
 
-const Layout = ({ children, hewwo = true }: LayoutProps) => {
+const Layout = ({
+  children,
+  hewwo = true,
+  trueFooter = false,
+}: LayoutProps) => {
   if (hewwo && !saidHello) {
     sayHello();
     saidHello = true;
   }
 
   return (
-    <>
+    <div className='flex min-h-screen flex-col justify-between'>
       <Header />
-      <PageProgress color='#ff9a9a' />
       {children}
-    </>
+      <Footer trueFooter={trueFooter} />
+    </div>
   );
 };
 

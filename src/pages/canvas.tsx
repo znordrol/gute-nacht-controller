@@ -86,7 +86,7 @@ const Canvas: NextPage = () => {
   }, [canvas, data]);
 
   return (
-    <Layout>
+    <Layout trueFooter>
       <Seo templateTitle='Canvas 💕' />
       <AnimatePage>
         <main>
