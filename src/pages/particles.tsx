@@ -5,7 +5,7 @@ import ParticleComponent from '@/components/ParticleComponent';
 import Seo from '@/components/Seo';
 
 const ParticlesPage: NextPage = () => (
-  <Layout hewwo={false}>
+  <Layout hewwo={false} skipToContent={false}>
     <Seo templateTitle='Particles' />
     <main>
       <section className='bg-black text-primary-50'>

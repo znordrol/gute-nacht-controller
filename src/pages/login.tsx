@@ -57,7 +57,7 @@ const Login: NextPage = () => {
   };
 
   return (
-    <Layout hewwo={false}>
+    <Layout hewwo={false} skipToContent={false}>
       <Seo templateTitle='Login' />
       <AnimatePage>
         <main>

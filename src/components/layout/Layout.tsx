@@ -6,6 +6,7 @@ type LayoutProps = {
   children: React.ReactNode;
   hewwo?: boolean;
   trueFooter?: boolean;
+  skipToContent?: boolean;
 };
 
 let saidHello = false;
@@ -14,6 +15,7 @@ const Layout = ({
   children,
   hewwo = true,
   trueFooter = false,
+  skipToContent = true,
 }: LayoutProps) => {
   if (hewwo && !saidHello) {
     sayHello();
@@ -22,7 +24,7 @@ const Layout = ({
 
   return (
     <div className='flex min-h-screen flex-col justify-between'>
-      <Header />
+      <Header skipToContent={skipToContent} />
       {children}
       <Footer trueFooter={trueFooter} />
     </div>
