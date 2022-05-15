@@ -7,7 +7,12 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 import PageProgress from '@/components/PageProgress';
 import clsxm from '@/lib/clsxm';
 
-const links = [
+type Links = {
+  href: string;
+  label: string;
+}[];
+
+const links: Links = [
   { href: '/ttt', label: 'Tic Tac Toe' },
   { href: '/countdown', label: 'Countdown' },
   { href: '/particles', label: 'Particles' },
