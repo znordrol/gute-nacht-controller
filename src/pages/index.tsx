@@ -14,6 +14,7 @@ import StyledInput from '@/components/forms/StyledInput';
 import Layout from '@/components/layout/Layout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
+import Wave from '@/components/Wave';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import { toastStyle } from '@/constant/toast';
 import clsxm from '@/lib/clsxm';
@@ -155,9 +156,10 @@ const Home: NextPage = () => {
             <div className='layout min-h-screen space-y-10 py-10'>
               <div className='space-y-8'>
                 <div className='flex'>
-                  <Accent>
-                    <h1>Halooo {'<3'}</h1>
-                  </Accent>
+                  <h1>
+                    <Accent>Halooo {'<3'} </Accent>
+                    <Wave>👋</Wave>
+                  </h1>
                   <aside className='absolute left-[85%] z-10'>
                     <Menu as='div' className='relative inline-block text-left'>
                       <div>
