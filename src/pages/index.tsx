@@ -1,11 +1,15 @@
 import { Menu, Transition } from '@headlessui/react';
 import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
+import isEqual from 'lodash/isEqual';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { Fragment, useState } from 'react';
+import { useTheme } from 'next-themes';
+import { Fragment, useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { FiChevronDown } from 'react-icons/fi';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 import Accent from '@/components/Accent';
 import AnimatePage from '@/components/AnimatePage';
@@ -20,6 +24,11 @@ import { toastStyle } from '@/constant/toast';
 import clsxm from '@/lib/clsxm';
 import { ErrorResponse } from '@/types/api';
 
+const MySwal = withReactContent(Swal);
+
+const secretArray = ['l', 'o', 'v', 'e'];
+const inputArray: string[] = [];
+
 const Home: NextPage = () => {
   const [gnLoading, setGnLoading] = useState<boolean>(false);
   const [noGnLoading, setNoGnLoading] = useState<boolean>(false);
@@ -29,6 +38,28 @@ const Home: NextPage = () => {
   const [loveClick, setLoveClick] = useState<number>(0);
 
   const router = useRouter();
+
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    window.addEventListener('keyup', (event) => {
+      inputArray.push(event.key.toLowerCase());
+      if (inputArray.length > 4) {
+        inputArray.shift();
+      }
+
+      if (isEqual(secretArray, inputArray)) {
+        MySwal.fire({
+          title: 'Duarr ilysm',
+          html: "For in your arms I'm always home,<br>So happy and so proud.<br>Never a day you'll feel alone,<br>And I'll yell it oh so loud...<br>I LOVE YOU WITH ALL MY HEART!",
+          color: !theme || theme === 'dark' ? '#ddd' : '#111',
+          confirmButtonColor: '#71f397',
+          confirmButtonText: 'ILY',
+          background: !theme || theme === 'dark' ? '#111' : '#ddd',
+        });
+      }
+    });
+  }, [theme]);
 
   const handleGuteNacht = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
