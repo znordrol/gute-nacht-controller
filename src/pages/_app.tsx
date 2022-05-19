@@ -7,6 +7,8 @@ import { ThemeProvider } from 'next-themes';
 import NextNProgress from 'nextjs-progressbar';
 import { SWRConfig } from 'swr';
 
+import ScrollButton from '@/components/ScrollButton';
+
 declare module 'next-themes' {
   interface ThemeProviderProps {
     children: React.ReactNode;
@@ -33,6 +35,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         >
           <Component {...pageProps} />
         </AnimatePresence>
+        <ScrollButton />
       </SWRConfig>
     </ThemeProvider>
   );
