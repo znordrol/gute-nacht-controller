@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import clsxm from '@/lib/clsxm';
 
 export type CounterType = {
+  numberClassName?: string;
+  colWrapperClassName?: string;
   endDate: Date;
 } & React.ComponentPropsWithoutRef<'h2'>;
 
@@ -25,7 +27,12 @@ export const getAnnualCountdownDate = (d: Date) =>
 export const getMonthlyCountdownDate = (d: Date) =>
   isAfter(new Date(), add(d, { days: 1 })) ? add(d, { months: 1 }) : d;
 
-const Counter = ({ className, endDate }: CounterType) => {
+const Counter = ({
+  className,
+  endDate,
+  numberClassName,
+  colWrapperClassName,
+}: CounterType) => {
   const [timeLeft, setTimeLeft] = useState<Duration>(
     calculateTimeLeft(endDate)
   );
@@ -40,28 +47,74 @@ const Counter = ({ className, endDate }: CounterType) => {
 
   if (isADayAfter(endDate)) {
     return (
-      <h2 className={clsxm('space-x-4 text-5xl', className)}>
-        <span>0 Bulan</span>
-        <span>0 Hari</span>
-        <span>0 Jam</span>
-        <span>0 Menit</span>
-        <span>0 Detik</span>
-      </h2>
+      <div
+        className={clsxm(
+          'grid grid-cols-5 divide-x divide-neutral-400',
+          className
+        )}
+      >
+        <div
+          className={clsxm(
+            'flex flex-col items-center justify-center px-4',
+            colWrapperClassName
+          )}
+        >
+          <h2 className={numberClassName}>0</h2>
+          <p>Bulan</p>
+        </div>
+        <div>
+          <h2 className={numberClassName}>0</h2>
+          <p>Hari</p>
+        </div>
+        <div>
+          <h2 className={numberClassName}>0</h2>
+          <p>Jam</p>
+        </div>
+        <div>
+          <h2 className={numberClassName}>0</h2>
+          <p>Menit</p>
+        </div>
+        <div>
+          <h2 className={numberClassName}>0</h2>
+          <p>Detik</p>
+        </div>
+      </div>
     );
   }
 
   return (
-    <h2 className={clsxm('space-x-4 text-5xl', className)}>
-      {(timeLeft.months as number) > 0 && <span>{timeLeft.months} Bulan</span>}
-      {(timeLeft.days as number) > 0 && <span>{timeLeft.days} Hari</span>}
-      {(timeLeft.hours as number) > 0 && <span>{timeLeft.hours} Jam</span>}
-      {(timeLeft.minutes as number) > 0 && (
-        <span>{timeLeft.minutes} Menit</span>
+    <div
+      className={clsxm(
+        'grid grid-cols-5 divide-x divide-neutral-400',
+        className
       )}
-      {(timeLeft.seconds as number) > 0 && (
-        <span>{timeLeft.seconds} Detik</span>
-      )}
-    </h2>
+    >
+      <div
+        className={clsxm(
+          'flex flex-col items-center justify-center px-4',
+          colWrapperClassName
+        )}
+      >
+        <h2 className={numberClassName}>{timeLeft.months}</h2>
+        <p>Bulan</p>
+      </div>
+      <div>
+        <h2 className={numberClassName}>{timeLeft.days}</h2>
+        <p>Hari</p>
+      </div>
+      <div>
+        <h2 className={numberClassName}>{timeLeft.hours}</h2>
+        <p>Jam</p>
+      </div>
+      <div>
+        <h2 className={numberClassName}>{timeLeft.minutes}</h2>
+        <p>Menit</p>
+      </div>
+      <div>
+        <h2 className={numberClassName}>{timeLeft.seconds}</h2>
+        <p>Detik</p>
+      </div>
+    </div>
   );
 };
 

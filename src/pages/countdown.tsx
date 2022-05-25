@@ -102,7 +102,9 @@ const Countdown: NextPage = () => {
                         </Accent>
                       </h1>
                       <Counter
-                        className='text-2xl md:text-5xl'
+                        className='text-xl md:text-2xl'
+                        numberClassName='text-2xl md:text-5xl'
+                        colWrapperClassName='px-6'
                         endDate={getAnnualCountdownDate(hbdTia)}
                       />
                     </div>
@@ -111,7 +113,8 @@ const Countdown: NextPage = () => {
                         Ini punyaku seh wkwk gausah diliat
                       </h2>
                       <Counter
-                        className='text-sm md:text-3xl'
+                        className='text-xs md:text-xl'
+                        numberClassName='text-sm md:text-3xl'
                         endDate={getAnnualCountdownDate(hbdAku)}
                       />
                     </div>
@@ -130,7 +133,9 @@ const Countdown: NextPage = () => {
                         stroke='#f00'
                       />
                       <Counter
-                        className='text-3xl md:text-5xl'
+                        className='text-xl md:text-2xl'
+                        colWrapperClassName='px-6'
+                        numberClassName='text-3xl md:text-5xl'
                         endDate={getAnnualCountdownDate(anniv)}
                       />
                       <div className='space-y-8'>
@@ -142,7 +147,8 @@ const Countdown: NextPage = () => {
                           </Accent>
                         </h2>
                         <Counter
-                          className='text-xl md:text-3xl'
+                          className='text-base md:text-xl'
+                          numberClassName='text-xl md:text-3xl'
                           endDate={getMonthlyCountdownDate(mensive)}
                         />
                       </div>
