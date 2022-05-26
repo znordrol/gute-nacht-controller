@@ -191,7 +191,7 @@ const Home: NextPage = () => {
                     <Accent>Halooo {'<3'} </Accent>
                     <Wave>👋</Wave>
                   </h1>
-                  <aside className='absolute left-[85%] z-10'>
+                  <aside className='absolute right-8 z-10 md:right-24'>
                     <Menu as='div' className='relative inline-block text-left'>
                       <div>
                         <Menu.Button

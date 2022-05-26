@@ -13,7 +13,7 @@ type Links = {
 }[];
 
 const links: Links = [
-  { href: '/ttt', label: 'Tic Tac Toe' },
+  { href: '/ttt', label: 'TicTacToe' },
   { href: '/countdown', label: 'Countdown' },
   { href: '/particles', label: 'Particles' },
 ];
