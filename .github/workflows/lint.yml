@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.2.0
         with:
-          node-version: '14'
+          node-version: '16'
           cache: 'yarn'
       - run: yarn
       - run: yarn lint
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.2.0
         with:
-          node-version: '14'
+          node-version: '16'
           cache: 'yarn'
       - run: yarn
       - run: yarn tsc
@@ -36,7 +36,23 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.2.0
         with:
-          node-version: '14'
+          node-version: '16'
           cache: 'yarn'
       - run: yarn
       - run: yarn format
+
+  stylelint:
+    name: Run Stylelint Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Node
+        uses: actions/setup-node@v3.2.0
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: Install packages
+        run: yarn
+      - name: Run stylelint
+        run: yarn stylelint
