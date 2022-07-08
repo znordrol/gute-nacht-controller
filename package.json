@@ -23,7 +23,7 @@
     "tsc": "tsc --pretty --noEmit --incremental false"
   },
   "dependencies": {
-    "@headlessui/react": "^1.6.5",
+    "@headlessui/react": "^1.6.6",
     "@octokit/plugin-create-or-update-text-file": "^2.0.0",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
