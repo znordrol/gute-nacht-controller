@@ -85,7 +85,7 @@
     "next-sitemap": "^2.5.28",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
-    "prettier-plugin-tailwindcss": "^0.1.11",
+    "prettier-plugin-tailwindcss": "^0.1.12",
     "sort-package-json": "^1.57.0",
     "stylelint": "^14.9.1",
     "stylelint-config-prettier": "^9.0.3",
