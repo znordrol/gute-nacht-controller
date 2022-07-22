@@ -1,5 +1,6 @@
 import { Tab } from '@headlessui/react';
 import { lastDayOfMonth } from 'date-fns';
+import { intervalToDuration } from 'date-fns';
 import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -127,7 +128,18 @@ const Countdown: NextPage = () => {
                           Anniv kyta <span className='text-red-400'>❤️</span>
                         </Accent>
                       </h1>
-                      <h2>30 Maret 2022</h2>
+                      <h2>
+                        30 Maret 2022,{' '}
+                        <span className='text-rose-500 dark:text-rose-300'>
+                          #
+                          {
+                            intervalToDuration({
+                              start: new Date(2022, 2, 30),
+                              end: new Date(),
+                            }).years
+                          }
+                        </span>
+                      </h2>
                       <AnimatedL
                         d='m188 171.61c-89.237-163.62-178.47 38.5 0 144.38 178.47-105.88 89.24-308 0-144.38z'
                         stroke='#f00'
@@ -145,6 +157,15 @@ const Countdown: NextPage = () => {
                             Mensiversary{' '}
                             <span className='text-red-400'>❤️</span>
                           </Accent>
+                        </h2>
+                        <h2 className='text-rose-500 dark:text-rose-300'>
+                          #
+                          {
+                            intervalToDuration({
+                              start: new Date(2022, 2, 30),
+                              end: new Date(),
+                            }).months
+                          }
                         </h2>
                         <Counter
                           className='text-base md:text-xl'

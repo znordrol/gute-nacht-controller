@@ -8,7 +8,7 @@ const ParticlesPage: NextPage = () => (
   <Layout hewwo={false} skipToContent={false}>
     <Seo templateTitle='Particles' />
     <main>
-      <section className='bg-black text-primary-50'>
+      <section className='relative h-screen'>
         <ParticleComponent />
       </section>
     </main>

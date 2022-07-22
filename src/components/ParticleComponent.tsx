@@ -8,22 +8,19 @@ export type ParticleProps = {
   particleClassName?: string;
 } & React.ComponentPropsWithoutRef<'div'>;
 
-const ParticleComponent = ({
-  className,
-  particleClassName,
-  ...rest
-}: ParticleProps) => {
+const ParticleComponent = ({ particleClassName }: ParticleProps) => {
   const particlesInit = async (main: Engine) => {
     await loadFull(main);
   };
 
   return (
-    <div className={clsxm('bg-black', className)} {...rest}>
+    <>
       <Particles
         id='tsparticles'
-        className={clsxm('h-full w-full', particleClassName)}
+        className={clsxm('absolute inset-0 bg-transparent', particleClassName)}
         init={particlesInit}
         options={{
+          fullScreen: false,
           background: {
             color: {
               value: 'transparent',
@@ -116,7 +113,7 @@ const ParticleComponent = ({
           detectRetina: true,
         }}
       />
-    </div>
+    </>
   );
 };
 
