@@ -68,8 +68,20 @@ export default withIronSessionApiRoute(
         res.send({ ok: true, data: uploadResponse });
         break;
       }
+      case 'GET': {
+        const images = await cloudinary.v2.api.resources({
+          type: 'upload',
+          resource_type: 'image',
+          prefix: 'tia/',
+        });
+
+        console.log(images);
+        res.send({ ok: true });
+
+        break;
+      }
       default:
-        res.setHeader('Allow', ['POST']);
+        res.setHeader('Allow', ['POST', 'GET']);
         res.status(405).end(`Method ${method} Not Allowed`);
     }
   },

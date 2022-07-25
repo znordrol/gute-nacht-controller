@@ -7,6 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import { FiTrash, FiUpload } from 'react-icons/fi';
 import { Modal } from 'react-responsive-modal';
 import { toast } from 'react-toastify';
+import useSWR from 'swr';
 
 import Button from '@/components/buttons/Button';
 import XButton from '@/components/buttons/XButton';
@@ -32,6 +33,10 @@ const GalleryPage: NextPage = () => {
 
   const [selectedFile, setSelectedFile] = useState<File>();
   const [preview, setPreview] = useState<string>();
+
+  const { data: images } = useSWR<{ ok: boolean }>('/api/gallery');
+
+  console.log(images);
 
   const onUpload = (files?: FileList | File[] | null) => {
     setSelectedFile(files?.[0]);
