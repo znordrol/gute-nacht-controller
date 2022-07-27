@@ -17,6 +17,7 @@ import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import clsxm from '@/lib/clsxm';
 import imageToDataUri from '@/lib/imageToDataUri';
+import { CloudinaryAdminResponse } from '@/types/cloudinary';
 
 const SUPPORTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -34,9 +35,10 @@ const GalleryPage: NextPage = () => {
   const [selectedFile, setSelectedFile] = useState<File>();
   const [preview, setPreview] = useState<string>();
 
-  const { data: images } = useSWR<{ ok: boolean }>('/api/gallery');
-
-  console.log(images);
+  const { data: images } = useSWR<{
+    ok: boolean;
+    data: CloudinaryAdminResponse;
+  }>('/api/gallery');
 
   const onUpload = (files?: FileList | File[] | null) => {
     setSelectedFile(files?.[0]);
@@ -175,7 +177,13 @@ const GalleryPage: NextPage = () => {
             </div>
           </Modal>
         </section>
-        <section></section>
+        <section>
+          <div>
+            {images?.data.resources.map(({ secure_url, asset_id }) => (
+              <p key={asset_id}>{secure_url}</p>
+            ))}
+          </div>
+        </section>
       </main>
     </Layout>
   );

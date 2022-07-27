@@ -75,8 +75,7 @@ export default withIronSessionApiRoute(
           prefix: 'tia/',
         });
 
-        console.log(images);
-        res.send({ ok: true });
+        res.send({ ok: true, data: images });
 
         break;
       }
