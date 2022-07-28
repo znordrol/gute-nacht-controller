@@ -3,9 +3,6 @@ export const imageToDataUri = (
   mediaType: string
 ) => {
   if (!data || !mediaType) {
-    console.log(
-      'ImageDataURI :: Error :: Missing some of the required params: data, mediaType '
-    );
     return null;
   }
 
