@@ -9,11 +9,14 @@ export type CounterType = {
   endDate: Date;
 } & React.ComponentPropsWithoutRef<'h2'>;
 
-const calculateTimeLeft = (endDate: Date) =>
-  intervalToDuration({
+const calculateTimeLeft = (endDate: Date) => {
+  const now = new Date();
+  if (now > endDate) return;
+  return intervalToDuration({
     start: new Date(),
     end: endDate,
   });
+};
 
 export const isADayAfter = (dDay: Date) =>
   isWithinInterval(new Date(), {
