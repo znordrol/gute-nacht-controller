@@ -29,6 +29,7 @@ const queryTab = ['hbd', 'anniv'];
 
 const Countdown: NextPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const [hbdTia, hbdAku, anniv, mensive] = [
     new Date(new Date().getFullYear(), 10, 2, 11, 0, 0),
@@ -59,6 +60,10 @@ const Countdown: NextPage = () => {
     }
   }, [router.isReady, router.query]);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const windowFocused = useWindowFocus();
 
   return (
@@ -68,7 +73,7 @@ const Countdown: NextPage = () => {
         <main>
           <section className='my-4'>
             <div className='layout flex flex-col items-center justify-center gap-y-10 text-center'>
-              {fireConfettia && windowFocused && <Confettia />}
+              {mounted && fireConfettia && windowFocused && <Confettia />}
               <Tab.Group
                 selectedIndex={selectedIndex}
                 onChange={setSelectedIndex}
