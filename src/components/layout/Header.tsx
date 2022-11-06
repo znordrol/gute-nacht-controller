@@ -51,10 +51,11 @@ const Header = ({ skipToContent = true }: HeaderProp): JSX.Element => {
         <li className='z-10'>
           <ul className='flex items-center justify-between space-x-8'>
             <li>
-              <Link href='/'>
-                <a className='font-bold transition-all duration-200 hover:text-primary-300'>
-                  Home
-                </a>
+              <Link
+                href='/'
+                className='font-bold transition-all duration-200 hover:text-primary-300'
+              >
+                Home
               </Link>
             </li>
             {links.map(({ href, label }) => (
