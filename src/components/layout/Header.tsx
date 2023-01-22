@@ -29,7 +29,7 @@ const Header = ({ skipToContent = true }: HeaderProp): JSX.Element => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className='bg-gray-300 dark:bg-neutral-700'>
+    <nav className='bg-gray-300 dark:bg-dark'>
       <PageProgress color='#ff9a9a' />
       {skipToContent && (
         <a
@@ -97,7 +97,7 @@ const Header = ({ skipToContent = true }: HeaderProp): JSX.Element => {
                   leaveFrom='transform opacity-100 scale-100'
                   leaveTo='transform opacity-0 scale-95'
                 >
-                  <Menu.Items className='absolute right-0 z-50 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md bg-neutral-200 shadow-lg ring-1 ring-light ring-opacity-5 focus:outline-none dark:bg-neutral-800'>
+                  <Menu.Items className='bg-neutral-200 dark:bg-neutral-800 absolute right-0 z-50 mt-2 w-56 origin-top-right divide-y divide-gray-600 rounded-md shadow-lg ring-1 ring-light ring-opacity-5 focus:outline-none'>
                     <div className='px-1 py-1'>
                       {links.map(({ href, label }) => (
                         <Menu.Item key={label}>

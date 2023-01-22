@@ -1,5 +1,5 @@
 import { add, intervalToDuration, isAfter, isWithinInterval } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 
 import clsxm from '@/lib/clsxm';
 
@@ -52,7 +52,7 @@ const Counter = ({
     return (
       <div
         className={clsxm(
-          'grid grid-cols-5 divide-x divide-neutral-400',
+          'divide-neutral-400 grid grid-cols-5 divide-x',
           className
         )}
       >
@@ -96,7 +96,7 @@ const Counter = ({
   return (
     <div
       className={clsxm(
-        'grid divide-x divide-neutral-400',
+        'divide-neutral-400 grid divide-x',
         timeLefts.length === 1 && 'grid-cols-1',
         timeLefts.length === 2 && 'grid-cols-2',
         timeLefts.length === 3 && 'grid-cols-3',
@@ -113,7 +113,9 @@ const Counter = ({
           )}
           key={label}
         >
-          <h2 className={numberClassName}>{t}</h2>
+          <span className={clsxm('font-bold', numberClassName, 'countdown')}>
+            <span style={{ '--value': t } as CSSProperties} />
+          </span>
           <p>{label}</p>
         </div>
       ))}
