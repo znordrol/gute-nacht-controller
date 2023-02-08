@@ -36,7 +36,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         }}
       >
         <AnimatePresence
-          exitBeforeEnter
+          mode='wait'
           initial={false}
           onExitComplete={() => window.scrollTo(0, 0)}
         >
