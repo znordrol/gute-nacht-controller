@@ -73,6 +73,7 @@ export default withIronSessionApiRoute(
           type: 'upload',
           resource_type: 'image',
           prefix: 'tia/',
+          max_results: 500,
         });
 
         res.send({ ok: true, data: images });

@@ -24,6 +24,7 @@ import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import clsxm from '@/lib/clsxm';
 import imageToDataUri from '@/lib/imageToDataUri';
+import renameFile from '@/lib/renameFile';
 import { CloudinaryAdminResponse } from '@/types/cloudinary';
 
 const SUPPORTED_IMAGE_TYPES = [
@@ -83,7 +84,7 @@ const GalleryPage: NextPage = () => {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
     e.preventDefault();
     if (
@@ -95,19 +96,47 @@ const GalleryPage: NextPage = () => {
       toast.error('File must be an image (jpeg, png, gif, webp)');
       return;
     }
-    onUpload(e?.currentTarget?.files);
+    const options = {
+      maxSizeMB: 4,
+      useWebWorker: true,
+    };
+    let totalSize = 0;
+    const acceptedFiles = e?.currentTarget?.files ?? [];
+    const compressedFiles: File[] = [];
+    for (let i = 0, j = acceptedFiles.length; i < j; ++i) {
+      const compressedFile = await imageCompression(acceptedFiles[i], options);
+      if (compressedFile.size > 4000000) {
+        toast.error('Image is too big, maximum size is 4mb');
+        return;
+      }
+      compressedFiles.push(compressedFile);
+      totalSize += compressedFile.size;
+    }
+    if (totalSize > 4000000) {
+      toast.error('Total image size must not exceed 4mb');
+      return;
+    }
+    onUpload(compressedFiles);
   };
 
   const onSubmit = async () => {
     if (!selectedFile) {
       return toast.error('Please include an image!');
     }
+
+    const fileToBeSent = renameFile(
+      selectedFile,
+      `${selectedFile.name.split('.').slice(0, -1).join('.')}-${Date.now()}.${
+        selectedFile.name.split('.').splice(-1)[0]
+      }`
+    );
+
     const payload = {
       image: imageToDataUri(
-        await selectedFile.arrayBuffer(),
-        selectedFile.type
+        await fileToBeSent.arrayBuffer(),
+        fileToBeSent.type
       ),
-      name: selectedFile.name,
+      name: fileToBeSent.name,
     };
 
     onCloseModal();
