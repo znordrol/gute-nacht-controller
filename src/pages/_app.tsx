@@ -1,5 +1,7 @@
 import 'react-responsive-modal/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'yet-another-react-lightbox/styles.css';
+import 'yet-another-react-lightbox/plugins/thumbnails.css';
 import '@/styles/globals.css';
 
 import axios from 'axios';

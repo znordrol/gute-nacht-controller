@@ -1,13 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from 'axios';
+import imageCompression from 'browser-image-compression';
 import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FiTrash, FiUpload } from 'react-icons/fi';
+import PhotoAlbum from 'react-photo-album';
 import { Modal } from 'react-responsive-modal';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
+import Lightbox from 'yet-another-react-lightbox';
+import Fullscreen from 'yet-another-react-lightbox/plugins/fullscreen';
+import Slideshow from 'yet-another-react-lightbox/plugins/slideshow';
+import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 
 import Button from '@/components/buttons/Button';
 import XButton from '@/components/buttons/XButton';
@@ -34,8 +41,9 @@ const GalleryPage: NextPage = () => {
 
   const [selectedFile, setSelectedFile] = useState<File>();
   const [preview, setPreview] = useState<string>();
+  const [index, setIndex] = useState(-1);
 
-  const { data: images } = useSWR<{
+  const { data: images, mutate } = useSWR<{
     ok: boolean;
     data: CloudinaryAdminResponse;
   }>('/api/gallery');
@@ -44,14 +52,33 @@ const GalleryPage: NextPage = () => {
     setSelectedFile(files?.[0]);
   };
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     // Do something with the files
     if (!SUPPORTED_IMAGE_TYPES.includes(acceptedFiles[0].type)) {
       setSelectedFile(undefined);
       toast.error('File must be an image (jpeg, png, gif, webp)');
       return;
     }
-    onUpload(acceptedFiles);
+    const options = {
+      maxSizeMB: 4,
+      useWebWorker: true,
+    };
+    let totalSize = 0;
+    const compressedFiles: File[] = [];
+    for (let i = 0, j = acceptedFiles.length; i < j; ++i) {
+      const compressedFile = await imageCompression(acceptedFiles[i], options);
+      if (compressedFile.size > 4000000) {
+        toast.error('Image is too big, maximum size is 4mb');
+        return;
+      }
+      compressedFiles.push(compressedFile);
+      totalSize += compressedFile.size;
+    }
+    if (totalSize > 4000000) {
+      toast.error('Total image size must not exceed 4mb');
+      return;
+    }
+    onUpload(compressedFiles);
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -59,7 +86,6 @@ const GalleryPage: NextPage = () => {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
     e.preventDefault();
-    console.log(e?.currentTarget?.files?.[0]?.type);
     if (
       e?.currentTarget?.files?.[0]?.type &&
       !SUPPORTED_IMAGE_TYPES.includes(e.currentTarget.files[0].type)
@@ -94,6 +120,7 @@ const GalleryPage: NextPage = () => {
       success: {
         render: () => {
           setSelectedFile(undefined);
+          mutate();
           return 'Image uploaded successfully';
         },
       },
@@ -179,9 +206,30 @@ const GalleryPage: NextPage = () => {
         </section>
         <section>
           <div>
-            {images?.data.resources.map(({ secure_url, asset_id }) => (
-              <p key={asset_id}>{secure_url}</p>
-            ))}
+            <PhotoAlbum
+              layout='rows'
+              photos={
+                images?.data.resources.map((v) => ({
+                  src: v.secure_url,
+                  width: v.width,
+                  height: v.height,
+                })) || []
+              }
+              onClick={({ index }) => setIndex(index)}
+            />
+            <Lightbox
+              slides={
+                images?.data.resources.map((v) => ({
+                  src: v.secure_url,
+                  width: v.width,
+                  height: v.height,
+                })) || []
+              }
+              open={index >= 0}
+              index={index}
+              close={() => setIndex(-1)}
+              plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
+            />
           </div>
         </section>
       </main>

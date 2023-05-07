@@ -19,6 +19,7 @@ const links: Links = [
   { href: '/ttt', label: 'TicTacToe' },
   { href: '/countdown', label: 'Countdown' },
   { href: '/particles', label: 'Particles' },
+  { href: '/gallery', label: 'Gallery' },
 ];
 
 type HeaderProp = {
