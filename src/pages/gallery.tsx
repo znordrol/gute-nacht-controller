@@ -148,7 +148,12 @@ const GalleryPage: NextPage = () => {
   return (
     <Layout trueFooter skipToContent={false}>
       <Seo templateTitle='Gallery' />
-      <main>
+      <main className='px-8'>
+        <div className=''>
+          <h1 className='mb-4 text-4xl text-primary-300'>
+            Memori kita bersama 💕
+          </h1>
+        </div>
         <section className='flex items-center justify-center py-4'>
           <Button className='flex space-x-2' onClick={onOpenModal}>
             <FiUpload />
