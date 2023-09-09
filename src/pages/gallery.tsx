@@ -3,7 +3,7 @@ import axios from 'axios';
 import imageCompression from 'browser-image-compression';
 import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps, NextPage } from 'next';
-import { useCallback, useEffect, useState } from 'react';
+import { type ClipboardEvent, useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FiTrash, FiUpload } from 'react-icons/fi';
 import PhotoAlbum from 'react-photo-album';
@@ -43,6 +43,8 @@ const GalleryPage: NextPage = () => {
   const [selectedFile, setSelectedFile] = useState<File>();
   const [preview, setPreview] = useState<string>();
   const [index, setIndex] = useState(-1);
+  const [isCompressing, setIsCompressing] = useState(false);
+  const [compressingProgress, setCompressingProgress] = useState(0);
 
   const { data: images, mutate } = useSWR<{
     ok: boolean;
@@ -53,34 +55,58 @@ const GalleryPage: NextPage = () => {
     setSelectedFile(files?.[0]);
   };
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    // Do something with the files
-    if (!SUPPORTED_IMAGE_TYPES.includes(acceptedFiles[0].type)) {
-      setSelectedFile(undefined);
-      toast.error('File must be an image (jpeg, png, gif, webp)');
-      return;
-    }
-    const options = {
-      maxSizeMB: 4,
-      useWebWorker: true,
-    };
-    let totalSize = 0;
-    const compressedFiles: File[] = [];
-    for (let i = 0, j = acceptedFiles.length; i < j; ++i) {
-      const compressedFile = await imageCompression(acceptedFiles[i], options);
-      if (compressedFile.size > 4000000) {
-        toast.error('Image is too big, maximum size is 4mb');
+  const handleSetImage = useCallback(
+    async (files?: FileList | File[] | null) => {
+      const options = {
+        maxSizeMB: 3,
+        useWebWorker: true,
+        onProgress: (progress: number) => {
+          setCompressingProgress(progress);
+        },
+      };
+      let totalSize = 0;
+      const acceptedFiles = files ?? [];
+      const compressedFiles: File[] = [];
+      setIsCompressing(true);
+      try {
+        for (let i = 0, j = acceptedFiles.length; i < j; ++i) {
+          const compressedFile = await imageCompression(
+            acceptedFiles[i],
+            options
+          );
+          if (compressedFile.size > 4000000) {
+            toast.error('Image is too big, maximum size is 4mb');
+            return;
+          }
+          compressedFiles.push(compressedFile);
+          totalSize += compressedFile.size;
+        }
+      } catch {
+        toast.error('Error compressing image');
+      } finally {
+        setIsCompressing(false);
+      }
+      if (totalSize > 4000000) {
+        toast.error('Total image size must not exceed 4mb');
         return;
       }
-      compressedFiles.push(compressedFile);
-      totalSize += compressedFile.size;
-    }
-    if (totalSize > 4000000) {
-      toast.error('Total image size must not exceed 4mb');
-      return;
-    }
-    onUpload(compressedFiles);
-  }, []);
+      onUpload(compressedFiles);
+    },
+    []
+  );
+
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      // Do something with the files
+      if (!SUPPORTED_IMAGE_TYPES.includes(acceptedFiles[0].type)) {
+        setSelectedFile(undefined);
+        toast.error('File must be an image (jpeg, png, gif, webp)');
+        return;
+      }
+      handleSetImage(acceptedFiles);
+    },
+    [handleSetImage]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -96,27 +122,19 @@ const GalleryPage: NextPage = () => {
       toast.error('File must be an image (jpeg, png, gif, webp)');
       return;
     }
-    const options = {
-      maxSizeMB: 4,
-      useWebWorker: true,
-    };
-    let totalSize = 0;
-    const acceptedFiles = e?.currentTarget?.files ?? [];
-    const compressedFiles: File[] = [];
-    for (let i = 0, j = acceptedFiles.length; i < j; ++i) {
-      const compressedFile = await imageCompression(acceptedFiles[i], options);
-      if (compressedFile.size > 4000000) {
-        toast.error('Image is too big, maximum size is 4mb');
-        return;
-      }
-      compressedFiles.push(compressedFile);
-      totalSize += compressedFile.size;
-    }
-    if (totalSize > 4000000) {
-      toast.error('Total image size must not exceed 4mb');
+    handleSetImage(e?.currentTarget?.files);
+  };
+
+  const handlePaste = async (e: ClipboardEvent<HTMLInputElement>) => {
+    if (
+      e?.clipboardData?.files?.[0]?.type &&
+      !SUPPORTED_IMAGE_TYPES.includes(e.clipboardData.files[0].type)
+    ) {
+      setSelectedFile(undefined);
+      toast.error('File must be an image (jpeg, png, gif, webp)');
       return;
     }
-    onUpload(compressedFiles);
+    handleSetImage(e?.clipboardData?.files);
   };
 
   const onSubmit = async () => {
@@ -195,7 +213,7 @@ const GalleryPage: NextPage = () => {
             classNames={{ modal: 'rounded-xl bg:light dark:bg-dark' }}
             closeIcon={<XButton />}
           >
-            <div className='pt-8'>
+            <div className='pt-8' onPaste={handlePaste}>
               {!preview ? (
                 <DragNDrop
                   onChange={onFileChange}
@@ -203,7 +221,9 @@ const GalleryPage: NextPage = () => {
                   inputProps={getInputProps()}
                 >
                   <FiUpload className='mr-4' />
-                  {selectedFile?.name ?? 'Drop Image Here'}
+                  {isCompressing
+                    ? `Compressing... ${compressingProgress}%`
+                    : selectedFile?.name ?? 'Drop Image Here'}
                 </DragNDrop>
               ) : (
                 <div className='flex flex-col gap-y-8'>
