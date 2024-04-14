@@ -2,13 +2,23 @@
 import axios from 'axios';
 import imageCompression from 'browser-image-compression';
 import { withIronSessionSsr } from 'iron-session/next';
+import { orderBy } from 'lodash';
 import type { GetServerSideProps, NextPage } from 'next';
-import { type ClipboardEvent, useCallback, useEffect, useState } from 'react';
+import queryString from 'query-string';
+import {
+  type ClipboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useDropzone } from 'react-dropzone';
+import { FaSortAmountDownAlt, FaSortAmountUpAlt } from 'react-icons/fa';
 import { FiTrash, FiUpload } from 'react-icons/fi';
 import PhotoAlbum from 'react-photo-album';
 import { Modal } from 'react-responsive-modal';
 import { toast } from 'react-toastify';
+import { useLocalStorage } from 'react-use';
 import useSWR from 'swr';
 import Lightbox from 'yet-another-react-lightbox';
 import Fullscreen from 'yet-another-react-lightbox/plugins/fullscreen';
@@ -23,6 +33,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { COOKIE_OPTIONS } from '@/constant/cookie';
 import clsxm from '@/lib/clsxm';
+import { addMinutesToDate } from '@/lib/datetime';
 import imageToDataUri from '@/lib/imageToDataUri';
 import renameFile from '@/lib/renameFile';
 import { CloudinaryAdminResponse } from '@/types/cloudinary';
@@ -33,6 +44,16 @@ const SUPPORTED_IMAGE_TYPES = [
   'image/gif',
   'image/webp',
 ];
+
+type ImageCacheType = {
+  images:
+    | {
+        ok: boolean;
+        data: CloudinaryAdminResponse;
+      }
+    | undefined;
+  expiredAt: Date;
+};
 
 const GalleryPage: NextPage = () => {
   const [open, setOpen] = useState(false);
@@ -45,11 +66,32 @@ const GalleryPage: NextPage = () => {
   const [index, setIndex] = useState(-1);
   const [isCompressing, setIsCompressing] = useState(false);
   const [compressingProgress, setCompressingProgress] = useState(0);
+  const [direction, setDirection] = useLocalStorage<'asc' | 'desc'>('asc');
+  const [size, setSize] = useState(20);
+  const [nextCursor, setNextCursor] = useState<string>();
+  const [cacheValue, setCacheValue, removeCache] =
+    useLocalStorage<ImageCacheType>('images-cache', undefined);
 
   const { data: images, mutate } = useSWR<{
     ok: boolean;
     data: CloudinaryAdminResponse;
-  }>('/api/gallery');
+  }>(
+    typeof localStorage !== 'undefined' && !cacheValue
+      ? queryString.stringifyUrl({
+          url: '/api/gallery',
+          query: { next_cursor: nextCursor, direction },
+        })
+      : null
+  );
+
+  const data = useMemo(
+    () => cacheValue?.images?.data || images?.data,
+    [cacheValue, images]
+  );
+
+  useEffect(() => {
+    setNextCursor(data?.next_cursor);
+  }, [data]);
 
   const onUpload = (files?: FileList | File[] | null) => {
     setSelectedFile(files?.[0]);
@@ -167,6 +209,7 @@ const GalleryPage: NextPage = () => {
       success: {
         render: () => {
           setSelectedFile(undefined);
+          removeCache();
           mutate();
           return 'Image uploaded successfully';
         },
@@ -192,14 +235,64 @@ const GalleryPage: NextPage = () => {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
+  useEffect(() => {
+    if (cacheValue) {
+      if (cacheValue.expiredAt > new Date()) {
+        removeCache();
+      }
+    }
+  }, [cacheValue, removeCache]);
+
+  useEffect(() => {
+    if (images) {
+      setCacheValue({ images, expiredAt: addMinutesToDate(new Date(), 15) });
+    }
+  }, [images, setCacheValue]);
+
+  const imgSource = useMemo(
+    () =>
+      orderBy(
+        (cacheValue?.images || images)?.data.resources.map((v) => ({
+          src: v.secure_url,
+          width: v.width,
+          height: v.height,
+          createdAt: v.created_at,
+        })),
+        'createdAt',
+        direction
+      ).slice(0, size) || [],
+    [images, cacheValue, direction, size]
+  );
+
   return (
     <Layout trueFooter skipToContent={false}>
       <Seo templateTitle='Gallery' />
       <main className='px-8'>
-        <div className=''>
-          <h1 className='mb-4 text-4xl text-primary-300'>
-            Memori kita bersama 💕
-          </h1>
+        <div className='mb-4 flex items-center justify-between'>
+          <h1 className='text-4xl text-primary-300'>Memori kita bersama 💕</h1>
+          <div className='flex items-center gap-12'>
+            <Button
+              className='flex space-x-2'
+              onClick={() => {
+                setDirection(direction === 'asc' ? 'desc' : 'asc');
+              }}
+            >
+              {direction === 'asc' ? (
+                <FaSortAmountDownAlt />
+              ) : (
+                <FaSortAmountUpAlt />
+              )}
+              <span>Urutkan</span>
+            </Button>
+            <Button
+              className='space-x-2'
+              onClick={() => {
+                removeCache();
+              }}
+            >
+              Reset cache
+            </Button>
+          </div>
         </div>
         <section className='flex items-center justify-center py-4'>
           <Button className='flex space-x-2' onClick={onOpenModal}>
@@ -262,28 +355,23 @@ const GalleryPage: NextPage = () => {
           <div>
             <PhotoAlbum
               layout='rows'
-              photos={
-                images?.data.resources.map((v) => ({
-                  src: v.secure_url,
-                  width: v.width,
-                  height: v.height,
-                })) || []
-              }
+              photos={imgSource}
               onClick={({ index }) => setIndex(index)}
             />
             <Lightbox
-              slides={
-                images?.data.resources.map((v) => ({
-                  src: v.secure_url,
-                  width: v.width,
-                  height: v.height,
-                })) || []
-              }
+              slides={imgSource}
               open={index >= 0}
               index={index}
               close={() => setIndex(-1)}
               plugins={[Fullscreen, Slideshow, Thumbnails, Zoom]}
             />
+          </div>
+          <div className='my-8 flex justify-center'>
+            {data?.resources.length && size < data?.resources.length && (
+              <Button variant='outline' onClick={() => setSize((s) => s + 20)}>
+                Load more
+              </Button>
+            )}
           </div>
         </section>
       </main>

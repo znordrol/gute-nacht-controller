@@ -18,5 +18,6 @@ export type CloudinaryAdminResponse = {
   rate_limit_allowed: number;
   rate_limit_remaining: number;
   rate_limit_reset_at: string;
+  next_cursor?: string;
   resources: CloudinaryResource[];
 };
