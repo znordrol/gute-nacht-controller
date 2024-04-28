@@ -75,16 +75,18 @@ export default withIronSessionApiRoute(
           typeof queryTag === 'string' &&
           queryTag.toLowerCase() !== 'all';
 
-        const images = shouldFetchByTag
-          ? await cloudinary.v2.api.resources_by_tag(queryTag as string)
-          : await cloudinary.v2.api.resources({
+        const imagesPromise = shouldFetchByTag
+          ? cloudinary.v2.api.resources_by_tag(queryTag as string)
+          : cloudinary.v2.api.resources({
               type: 'upload',
               resource_type: 'image',
               prefix: 'tia/',
               max_results: 500,
             });
 
-        const tags = await cloudinary.v2.api.tags();
+        const tagsPromise = cloudinary.v2.api.tags();
+
+        const [images, tags] = await Promise.all([imagesPromise, tagsPromise]);
 
         res.send({ ok: true, data: { images, tags } });
 
