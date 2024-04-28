@@ -2,7 +2,7 @@
 import axios from 'axios';
 import imageCompression from 'browser-image-compression';
 import { withIronSessionSsr } from 'iron-session/next';
-import { debounce, orderBy } from 'lodash';
+import { orderBy, throttle } from 'lodash';
 import type { GetServerSideProps, NextPage } from 'next';
 import queryString from 'query-string';
 import {
@@ -300,7 +300,7 @@ const GalleryPage: NextPage = () => {
       <Seo templateTitle='Gallery' />
       <main className='px-8'>
         <div className='mb-4 flex items-center justify-between'>
-          {/* <h1 className='text-4xl text-primary-300'>Memori kita bersama 💕</h1> */}
+          <h1 className='text-4xl text-primary-300'>Memori kita bersama 💕</h1>
           <div className='flex items-center gap-12'>
             <Button
               className='flex space-x-2'
@@ -331,7 +331,7 @@ const GalleryPage: NextPage = () => {
               variant={selectedTags === tag ? 'default' : 'secondary'}
               className='cursor-pointer'
               key={tag + i}
-              onClick={debounce(() => {
+              onClick={throttle(() => {
                 if (isValidating) {
                   return;
                 }
