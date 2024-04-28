@@ -2,7 +2,7 @@
 import axios from 'axios';
 import imageCompression from 'browser-image-compression';
 import { withIronSessionSsr } from 'iron-session/next';
-import { orderBy } from 'lodash';
+import { debounce, orderBy } from 'lodash';
 import type { GetServerSideProps, NextPage } from 'next';
 import queryString from 'query-string';
 import {
@@ -26,6 +26,7 @@ import Slideshow from 'yet-another-react-lightbox/plugins/slideshow';
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 
+import { Badge } from '@/components/Badge';
 import Button from '@/components/buttons/Button';
 import XButton from '@/components/buttons/XButton';
 import DragNDrop from '@/components/DragNDrop';
@@ -36,7 +37,10 @@ import clsxm from '@/lib/clsxm';
 import { addMinutesToDate } from '@/lib/datetime';
 import imageToDataUri from '@/lib/imageToDataUri';
 import renameFile from '@/lib/renameFile';
-import { CloudinaryAdminResponse } from '@/types/cloudinary';
+import {
+  CloudinaryAdminResponse,
+  CloudinaryAdminTagsResponse,
+} from '@/types/cloudinary';
 
 const SUPPORTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -46,12 +50,12 @@ const SUPPORTED_IMAGE_TYPES = [
 ];
 
 type ImageCacheType = {
-  images:
-    | {
-        ok: boolean;
-        data: CloudinaryAdminResponse;
-      }
-    | undefined;
+  images: CloudinaryAdminResponse;
+  expiredAt: Date;
+};
+
+type TagsCacheType = {
+  tags: CloudinaryAdminTagsResponse;
   expiredAt: Date;
 };
 
@@ -71,21 +75,35 @@ const GalleryPage: NextPage = () => {
   const [nextCursor, setNextCursor] = useState<string>();
   const [cacheValue, setCacheValue, removeCache] =
     useLocalStorage<ImageCacheType>('images-cache', undefined);
+  const [selectedTags, setSelectedTags] = useState('All');
 
-  const { data: images, mutate } = useSWR<{
+  const [tagsCacheValue, setTagsCacheValue, removeTagsCache] =
+    useLocalStorage<TagsCacheType>('tags-cache', undefined);
+
+  const {
+    data: result,
+    mutate,
+    isValidating,
+  } = useSWR<{
     ok: boolean;
-    data: CloudinaryAdminResponse;
+    data: {
+      images: CloudinaryAdminResponse;
+      tags: CloudinaryAdminTagsResponse;
+    };
   }>(
     typeof localStorage !== 'undefined' && !cacheValue
       ? queryString.stringifyUrl({
           url: '/api/gallery',
-          query: { next_cursor: nextCursor, direction },
+          query: { next_cursor: nextCursor, direction, tags: selectedTags },
         })
       : null
   );
 
+  const images = useMemo(() => result?.data?.images, [result]);
+  const tags = useMemo(() => result?.data?.tags, [result]);
+
   const data = useMemo(
-    () => cacheValue?.images?.data || images?.data,
+    () => cacheValue?.images || images,
     [cacheValue, images]
   );
 
@@ -241,18 +259,26 @@ const GalleryPage: NextPage = () => {
         removeCache();
       }
     }
-  }, [cacheValue, removeCache]);
+    if (tagsCacheValue) {
+      if (tagsCacheValue.expiredAt > new Date()) {
+        removeTagsCache();
+      }
+    }
+  }, [cacheValue, removeCache, removeTagsCache, tagsCacheValue]);
 
   useEffect(() => {
     if (images) {
       setCacheValue({ images, expiredAt: addMinutesToDate(new Date(), 15) });
     }
-  }, [images, setCacheValue]);
+    if (tags) {
+      setTagsCacheValue({ tags, expiredAt: addMinutesToDate(new Date(), 15) });
+    }
+  }, [images, setCacheValue, setTagsCacheValue, tags]);
 
   const imgSource = useMemo(
     () =>
       orderBy(
-        (cacheValue?.images || images)?.data.resources.map((v) => ({
+        (cacheValue?.images || images)?.resources.map((v) => ({
           src: v.secure_url,
           width: v.width,
           height: v.height,
@@ -264,12 +290,17 @@ const GalleryPage: NextPage = () => {
     [images, cacheValue, direction, size]
   );
 
+  const allTags = useMemo(
+    () => tagsCacheValue?.tags || tags,
+    [tags, tagsCacheValue?.tags]
+  );
+
   return (
     <Layout trueFooter skipToContent={false}>
       <Seo templateTitle='Gallery' />
       <main className='px-8'>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-4xl text-primary-300'>Memori kita bersama 💕</h1>
+          {/* <h1 className='text-4xl text-primary-300'>Memori kita bersama 💕</h1> */}
           <div className='flex items-center gap-12'>
             <Button
               className='flex space-x-2'
@@ -293,6 +324,24 @@ const GalleryPage: NextPage = () => {
               Reset cache
             </Button>
           </div>
+        </div>
+        <div className='flex gap-x-4'>
+          {['All', ...(allTags?.tags ?? [])].map((tag, i) => (
+            <Badge
+              variant={selectedTags === tag ? 'default' : 'secondary'}
+              className='cursor-pointer'
+              key={tag + i}
+              onClick={debounce(() => {
+                if (isValidating) {
+                  return;
+                }
+                setSelectedTags(tag);
+                removeCache();
+              }, 500)}
+            >
+              {tag}
+            </Badge>
+          ))}
         </div>
         <section className='flex items-center justify-center py-4'>
           <Button className='flex space-x-2' onClick={onOpenModal}>

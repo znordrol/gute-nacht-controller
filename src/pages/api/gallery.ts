@@ -69,14 +69,24 @@ export default withIronSessionApiRoute(
         break;
       }
       case 'GET': {
-        const images = await cloudinary.v2.api.resources({
-          type: 'upload',
-          resource_type: 'image',
-          prefix: 'tia/',
-          max_results: 500,
-        });
+        const queryTag = req.query?.tags;
+        const shouldFetchByTag =
+          queryTag &&
+          typeof queryTag === 'string' &&
+          queryTag.toLowerCase() !== 'all';
 
-        res.send({ ok: true, data: images });
+        const images = shouldFetchByTag
+          ? await cloudinary.v2.api.resources_by_tag(queryTag as string)
+          : await cloudinary.v2.api.resources({
+              type: 'upload',
+              resource_type: 'image',
+              prefix: 'tia/',
+              max_results: 500,
+            });
+
+        const tags = await cloudinary.v2.api.tags();
+
+        res.send({ ok: true, data: { images, tags } });
 
         break;
       }

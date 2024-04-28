@@ -21,3 +21,10 @@ export type CloudinaryAdminResponse = {
   next_cursor?: string;
   resources: CloudinaryResource[];
 };
+
+export type CloudinaryAdminTagsResponse = {
+  rate_limit_allowed: number;
+  rate_limit_remaining: number;
+  rate_limit_reset_at: string;
+  tags: string[];
+};
