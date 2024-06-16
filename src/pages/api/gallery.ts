@@ -47,6 +47,7 @@ export default withIronSessionApiRoute(
     switch (method) {
       case 'POST': {
         const image = req.body.image as string | undefined;
+        const tags: string[] | undefined = req.body.tags;
 
         if (!image || typeof image !== 'string') {
           return res.status(httpStatus.BAD_REQUEST).json({
@@ -61,6 +62,7 @@ export default withIronSessionApiRoute(
             use_filename: true,
             unique_filename: false,
           }),
+          tags,
           folder: 'tia',
         });
 

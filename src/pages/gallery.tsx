@@ -17,6 +17,7 @@ import { FaSortAmountDownAlt, FaSortAmountUpAlt } from 'react-icons/fa';
 import { FiTrash, FiUpload } from 'react-icons/fi';
 import PhotoAlbum from 'react-photo-album';
 import { Modal } from 'react-responsive-modal';
+import { SEPARATORS, WithContext as ReactTags } from 'react-tag-input';
 import { toast } from 'react-toastify';
 import { useLocalStorage } from 'react-use';
 import useSWR from 'swr';
@@ -37,6 +38,8 @@ import clsxm from '@/lib/clsxm';
 import { addMinutesToDate } from '@/lib/datetime';
 import imageToDataUri from '@/lib/imageToDataUri';
 import renameFile from '@/lib/renameFile';
+import { TAGS_SUGGESTION } from '@/lib/tags';
+import { uniqueByKey } from '@/lib/uniqueByKey';
 import {
   CloudinaryAdminResponse,
   CloudinaryAdminTagsResponse,
@@ -59,6 +62,12 @@ type TagsCacheType = {
   expiredAt: Date;
 };
 
+type UploadTag = {
+  id: string;
+  className: string;
+  [key: string]: string;
+};
+
 const GalleryPage: NextPage = () => {
   const [open, setOpen] = useState(false);
 
@@ -76,6 +85,8 @@ const GalleryPage: NextPage = () => {
   const [cacheValue, setCacheValue, removeCache] =
     useLocalStorage<ImageCacheType>('images-cache', undefined);
   const [selectedTags, setSelectedTags] = useState('All');
+
+  const [uploadTags, setUploadTags] = useState<UploadTag[]>([]);
 
   const [tagsCacheValue, setTagsCacheValue, removeTagsCache] =
     useLocalStorage<TagsCacheType>('tags-cache', undefined);
@@ -215,6 +226,7 @@ const GalleryPage: NextPage = () => {
         fileToBeSent.type,
       ),
       name: fileToBeSent.name,
+      tags: uploadTags.map((t) => t.text).filter(Boolean),
     };
 
     onCloseModal();
@@ -295,6 +307,73 @@ const GalleryPage: NextPage = () => {
     [tags, tagsCacheValue?.tags],
   );
 
+  const handleDelete = (index: number) => {
+    setUploadTags((tags) => tags.filter((_, i) => i !== index));
+  };
+
+  const onTagUpdate = (index: number, newTag: UploadTag) => {
+    const updatedTags = [...uploadTags];
+    updatedTags.splice(index, 1, newTag);
+    setUploadTags(updatedTags);
+  };
+
+  const handleAddition = (tag: UploadTag) => {
+    setUploadTags((prevTags) => {
+      return [...prevTags, tag];
+    });
+  };
+
+  const handleDrag = (tag: UploadTag, currPos: number, newPos: number) => {
+    const newTags = uploadTags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    setUploadTags(newTags);
+  };
+
+  const handleTagClick = (index: number) => {
+    console.log('The tag at index ' + index + ' was clicked');
+  };
+
+  const onClearAll = () => {
+    setUploadTags([]);
+  };
+
+  // useEffect(
+  //   () =>
+  //     setUploadTags((t) =>
+  //       uniqueByKey(
+  //         [
+  //           ...new Set([
+  //             ...(allTags?.tags.map((tag) => ({
+  //               id: tag,
+  //               text: tag,
+  //               className: tag,
+  //             })) ?? []),
+  //             ...t,
+  //           ]),
+  //         ],
+  //         'id',
+  //       ),
+  //     ),
+  //   [allTags],
+  // );
+
+  const suggestions = useMemo(
+    () =>
+      uniqueByKey(
+        [
+          ...TAGS_SUGGESTION.map((t) => ({ id: t, text: t, className: t })),
+          ...(allTags?.tags.map((t) => ({ id: t, text: t, className: t })) ??
+            []),
+        ],
+        'id',
+      ),
+    [allTags?.tags],
+  );
+
   return (
     <Layout trueFooter skipToContent={false}>
       <Seo templateTitle='Gallery' />
@@ -372,6 +451,22 @@ const GalleryPage: NextPage = () => {
               ) : (
                 <div className='flex flex-col gap-y-8'>
                   <img src={preview} alt='preview' />
+                  <ReactTags
+                    separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
+                    tags={uploadTags}
+                    suggestions={suggestions}
+                    handleDelete={handleDelete}
+                    handleAddition={handleAddition}
+                    handleDrag={handleDrag}
+                    handleTagClick={handleTagClick}
+                    onTagUpdate={onTagUpdate}
+                    inputFieldPosition='bottom'
+                    editable
+                    clearAll
+                    onClearAll={onClearAll}
+                    maxTags={5}
+                    placeholder='Press enter or comma'
+                  />
                   <div className='flex justify-around'>
                     <Button
                       className='flex gap-x-2 py-1'
