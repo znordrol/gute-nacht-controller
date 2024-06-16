@@ -299,8 +299,10 @@ const GalleryPage: NextPage = () => {
     <Layout trueFooter skipToContent={false}>
       <Seo templateTitle='Gallery' />
       <main className='px-8'>
-        <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-4xl text-primary-300'>Memori kita bersama 💕</h1>
+        <div className='mb-4 flex flex-col items-center justify-between md:flex-row'>
+          <h1 className='mb-4 text-4xl text-primary-300'>
+            Memori kita bersama 💕
+          </h1>
           <div className='flex items-center gap-12'>
             <Button
               className='flex space-x-2'
