@@ -203,7 +203,7 @@ const Home: NextPage = () => {
                             'bg-primary-300 text-black',
                             'border border-primary-500',
                             'hover:bg-primary-500 hover:text-primary-50',
-                            'active:bg-primary-600'
+                            'active:bg-primary-600',
                           )}
                           onClick={handleEasterEgg}
                         >
@@ -230,7 +230,7 @@ const Home: NextPage = () => {
                                     active
                                       ? 'bg-violet-500 text-white'
                                       : 'text-dark dark:text-gray-100',
-                                    'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors'
+                                    'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors',
                                   )}
                                 >
                                   Ganti Password
@@ -244,7 +244,7 @@ const Home: NextPage = () => {
                                     active
                                       ? 'bg-violet-500 text-white'
                                       : 'text-dark dark:text-gray-100',
-                                    'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors'
+                                    'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors',
                                   )}
                                   onClick={handleLogout}
                                 >
@@ -376,7 +376,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default Home;

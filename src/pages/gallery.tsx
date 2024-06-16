@@ -96,7 +96,7 @@ const GalleryPage: NextPage = () => {
           url: '/api/gallery',
           query: { next_cursor: nextCursor, direction, tags: selectedTags },
         })
-      : null
+      : null,
   );
 
   const images = useMemo(() => result?.data?.images, [result]);
@@ -104,7 +104,7 @@ const GalleryPage: NextPage = () => {
 
   const data = useMemo(
     () => cacheValue?.images || images,
-    [cacheValue, images]
+    [cacheValue, images],
   );
 
   useEffect(() => {
@@ -132,7 +132,7 @@ const GalleryPage: NextPage = () => {
         for (let i = 0, j = acceptedFiles.length; i < j; ++i) {
           const compressedFile = await imageCompression(
             acceptedFiles[i],
-            options
+            options,
           );
           if (compressedFile.size > 4000000) {
             toast.error('Image is too big, maximum size is 4mb');
@@ -152,7 +152,7 @@ const GalleryPage: NextPage = () => {
       }
       onUpload(compressedFiles);
     },
-    []
+    [],
   );
 
   const onDrop = useCallback(
@@ -165,7 +165,7 @@ const GalleryPage: NextPage = () => {
       }
       handleSetImage(acceptedFiles);
     },
-    [handleSetImage]
+    [handleSetImage],
   );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -206,13 +206,13 @@ const GalleryPage: NextPage = () => {
       selectedFile,
       `${selectedFile.name.split('.').slice(0, -1).join('.')}-${Date.now()}.${
         selectedFile.name.split('.').splice(-1)[0]
-      }`
+      }`,
     );
 
     const payload = {
       image: imageToDataUri(
         await fileToBeSent.arrayBuffer(),
-        fileToBeSent.type
+        fileToBeSent.type,
       ),
       name: fileToBeSent.name,
     };
@@ -285,14 +285,14 @@ const GalleryPage: NextPage = () => {
           createdAt: v.created_at,
         })),
         'createdAt',
-        direction
+        direction,
       ).slice(0, size) || [],
-    [images, cacheValue, direction, size]
+    [images, cacheValue, direction, size],
   );
 
   const allTags = useMemo(
     () => tagsCacheValue?.tags || tags,
-    [tags, tagsCacheValue?.tags]
+    [tags, tagsCacheValue?.tags],
   );
 
   return (
@@ -390,7 +390,7 @@ const GalleryPage: NextPage = () => {
                         'border border-green-500',
                         'hover:bg-green-500 hover:text-primary-50',
                         'active:bg-green-600',
-                        'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black'
+                        'disabled:bg-green-300 disabled:hover:bg-green-300 disabled:hover:text-black',
                       )}
                       onClick={onSubmit}
                     >
@@ -449,7 +449,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default GalleryPage;

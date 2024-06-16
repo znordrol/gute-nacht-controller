@@ -63,7 +63,7 @@ const tttHandler = withIronSessionApiRoute(
       res.status(405).json({ message: `Method ${req.method} Not Allowed` });
     }
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default tttHandler;

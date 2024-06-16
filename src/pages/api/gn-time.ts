@@ -55,7 +55,7 @@ const GuteNachtTime = withIronSessionApiRoute(
         .json({ message: 'Method Not Allowed' });
     }
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default GuteNachtTime;

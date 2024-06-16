@@ -7,14 +7,14 @@ import NoSsr from '../NoSsr';
 const VideoComponent = (props: { participantId: string }) => {
   const micRef = useRef<HTMLAudioElement>(null);
   const { webcamStream, micStream, webcamOn, micOn, isLocal } = useParticipant(
-    props.participantId
+    props.participantId,
   );
 
   const videoStream = useMemo(() => {
     if (webcamOn && webcamStream != null) {
       const mediaStream = new MediaStream();
       mediaStream.addTrack(
-        (webcamStream as unknown as { track: MediaStreamTrack }).track
+        (webcamStream as unknown as { track: MediaStreamTrack }).track,
       );
       return mediaStream;
     }
@@ -25,14 +25,14 @@ const VideoComponent = (props: { participantId: string }) => {
       if (micOn && micStream != null) {
         const mediaStream = new MediaStream();
         mediaStream.addTrack(
-          (micStream as unknown as { track: MediaStreamTrack }).track
+          (micStream as unknown as { track: MediaStreamTrack }).track,
         );
 
         micRef.current.srcObject = mediaStream;
         micRef.current
           .play()
           .catch((error) =>
-            console.error('videoElem.current.play() failed', error)
+            console.error('videoElem.current.play() failed', error),
           );
       } else {
         micRef.current.srcObject = null;

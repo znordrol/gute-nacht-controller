@@ -53,13 +53,13 @@ const Counter = ({
       <div
         className={clsxm(
           'divide-neutral-400 grid grid-cols-5 divide-x',
-          className
+          className,
         )}
       >
         <div
           className={clsxm(
             'flex flex-col items-center justify-center px-4',
-            colWrapperClassName
+            colWrapperClassName,
           )}
         >
           <h2 className={numberClassName}>0</h2>
@@ -102,14 +102,14 @@ const Counter = ({
         timeLefts.length === 3 && 'grid-cols-3',
         timeLefts.length === 4 && 'grid-cols-4',
         timeLefts.length === 5 && 'grid-cols-5',
-        className
+        className,
       )}
     >
       {timeLefts.map(({ t, label }) => (
         <div
           className={clsxm(
             'flex flex-col items-center justify-center px-4',
-            colWrapperClassName
+            colWrapperClassName,
           )}
           key={label}
         >

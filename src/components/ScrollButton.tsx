@@ -49,14 +49,14 @@ const ScrollButton = ({
       className={clsxm(
         'fixed right-8 bottom-8 z-50',
         !visible && 'hidden',
-        wrapperClassName
+        wrapperClassName,
       )}
     >
       <button
         type='button'
         className={clsxm(
           'inline-flex items-center justify-center rounded-md border border-transparent bg-rose-500 p-2 text-white hover:bg-rose-400 focus:outline-none dark:bg-slate-800 dark:hover:bg-slate-700',
-          className
+          className,
         )}
         onClick={(): void => scrollToTop()}
         {...rest}

@@ -1,6 +1,6 @@
 export const imageToDataUri = (
   data: Buffer | string | ArrayBuffer,
-  mediaType: string
+  mediaType: string,
 ) => {
   if (!data || !mediaType) {
     return null;
@@ -10,8 +10,8 @@ export const imageToDataUri = (
   const dataBase64 = Buffer.isBuffer(data)
     ? data.toString('base64')
     : typeof data === 'string'
-    ? Buffer.from(data).toString('base64')
-    : Buffer.from(data).toString('base64');
+      ? Buffer.from(data).toString('base64')
+      : Buffer.from(data).toString('base64');
   const dataImgBase64 = 'data:' + mediaType + ';base64,' + dataBase64;
 
   return dataImgBase64;

@@ -44,7 +44,7 @@ const ChangePassword: NextPage = () => {
           }
           return 'Yah ganti passwordnya menggagal 😭😭, segera panggil akuu';
         },
-      }
+      },
     );
   };
 
@@ -134,7 +134,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default ChangePassword;

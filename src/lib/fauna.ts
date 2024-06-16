@@ -21,8 +21,8 @@ export const getUser = async (body: Partial<User> & { name: string }) => {
         userRef: q.Match(q.Index('get_user_by_name'), name),
         userExists: q.Exists(q.Var('userRef')),
       },
-      q.If(q.Var('userExists'), q.Get(q.Var('userRef')), null)
-    )
+      q.If(q.Var('userExists'), q.Get(q.Var('userRef')), null),
+    ),
   );
 
   return data;
@@ -49,9 +49,9 @@ export const changePassword = async ({
           q.Update(q.Select(['ref'], q.Get(q.Var('userRef'))), {
             data: { password: newPassword },
           }),
-          null
-        )
-      )
+          null,
+        ),
+      ),
     );
     return data;
   } catch (e) {
@@ -77,9 +77,9 @@ export const saveCanvas = async ({ name, saveData }: SaveCanvasOptions) => {
           q.Update(q.Select(['ref'], q.Get(q.Var('canvasRef'))), {
             data: { saveData },
           }),
-          q.Create(q.Collection('canvas'), { data: { name, saveData } })
-        )
-      )
+          q.Create(q.Collection('canvas'), { data: { name, saveData } }),
+        ),
+      ),
     );
 
   return result;
@@ -93,8 +93,8 @@ export const getCanvas = async (name: string) => {
           canvasRef: q.Match(q.Index('get_canvas_by_name'), name),
           canvasExists: q.Exists(q.Var('canvasRef')),
         },
-        q.If(q.Var('canvasExists'), q.Get(q.Var('canvasRef')), null)
-      )
+        q.If(q.Var('canvasExists'), q.Get(q.Var('canvasRef')), null),
+      ),
     );
 
   return data;
@@ -104,8 +104,8 @@ export const getCanvases = async (): Promise<CanvasDataRes[]> => {
   const { data } = await faunaClient.query<AllCanvasResRaw>(
     q.Map(
       q.Paginate(q.Documents(q.Collection('canvas'))),
-      q.Lambda((x) => q.Get(x))
-    )
+      q.Lambda((x) => q.Get(x)),
+    ),
   );
 
   return data.map((datum) => {

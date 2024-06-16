@@ -1,4 +1,4 @@
-import { type VariantProps, cva } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import clsxm from '@/lib/clsxm';
@@ -20,7 +20,7 @@ const badgeVariants = cva(
     defaultVariants: {
       variant: 'default',
     },
-  }
+  },
 );
 
 export interface BadgeProps

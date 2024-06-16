@@ -24,7 +24,7 @@ const TicTacToe: NextPage = () => {
   const handlePlay = (
     e: React.MouseEvent<HTMLDivElement>,
     x: number,
-    y: number
+    y: number,
   ) => {
     e.preventDefault();
 
@@ -72,7 +72,7 @@ const TicTacToe: NextPage = () => {
                     >
                       {col}
                     </div>
-                  ))
+                  )),
                 )}
               </section>
 
@@ -123,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default TicTacToe;

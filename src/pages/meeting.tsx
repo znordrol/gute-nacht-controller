@@ -19,17 +19,17 @@ const createMeeting = async ({ token }: { token?: string }) => {
   return data;
 };
 
-const isSSR = () => typeof window === undefined;
+const isSSR = () => typeof window === 'undefined';
 
 const MeetingConsumer = dynamic(
   () =>
     import('@videosdk.live/react-sdk').then((module) => module.MeetingConsumer),
-  { ssr: false }
+  { ssr: false },
 );
 const MeetingProvider = dynamic(
   () =>
     import('@videosdk.live/react-sdk').then((module) => module.MeetingProvider),
-  { ssr: false }
+  { ssr: false },
 );
 
 const Container = dynamic(() => import('@/components/meeting/Container'), {
@@ -44,7 +44,7 @@ const MeetingPage: NextPage = () => {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get<{ token: string }>(
-        `${API_URL}meeting/get-token`
+        `${API_URL}meeting/get-token`,
       );
       setToken(data.token);
     })().finally(() => setLoading(false));
@@ -131,7 +131,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default MeetingPage;

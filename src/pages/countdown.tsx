@@ -41,12 +41,12 @@ const Countdown: NextPage = () => {
       new Date().getMonth() === 1 ? lastDayOfMonth(new Date()).getDate() : 30,
       0,
       0,
-      0
+      0,
     ),
   ];
 
   const fireConfettia = [hbdTia, hbdAku, anniv, mensive].some((a) =>
-    isADayAfter(a)
+    isADayAfter(a),
   );
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Countdown: NextPage = () => {
                           'ring-white ring-opacity-60 ring-offset-2 ring-offset-rose-400 focus:outline-none focus:ring-2',
                           selected
                             ? 'bg-gray-300 shadow'
-                            : 'text-dark hover:bg-white/[0.12] hover:text-white dark:text-blue-100'
+                            : 'text-dark hover:bg-white/[0.12] hover:text-white dark:text-blue-100',
                         )
                       }
                     >
@@ -220,7 +220,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default Countdown;

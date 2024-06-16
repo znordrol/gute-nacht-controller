@@ -82,8 +82,12 @@
   .animated-underline {
     background-image: linear-gradient(#3330, #3330),
       linear-gradient(to right, var(--clr-primary-300), var(--clr-primary-100));
-    background-size: 100% 2px, 0 2px;
-    background-position: 100% 100%, 0 100%;
+    background-size:
+      100% 2px,
+      0 2px;
+    background-position:
+      100% 100%,
+      0 100%;
     background-repeat: no-repeat;
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -96,7 +100,9 @@
 
   .animated-underline:hover,
   .animated-underline:focus-visible {
-    background-size: 0 2px, 100% 2px;
+    background-size:
+      0 2px,
+      100% 2px;
   }
 }
 

@@ -42,7 +42,7 @@ const Header = ({ skipToContent = true }: HeaderProp): JSX.Element => {
             'group dark:hover:text-primary-300',
             'focus:outline-none focus:ring focus:ring-primary-300',
             'absolute top-4 left-4 z-[1000]',
-            '-translate-y-16 focus:translate-y-0'
+            '-translate-y-16 focus:translate-y-0',
           )}
         >
           <Accent>I love you so much</Accent>
@@ -83,7 +83,7 @@ const Header = ({ skipToContent = true }: HeaderProp): JSX.Element => {
                     className={clsxm(
                       'inline-flex items-center rounded px-4 py-2 font-semibold',
                       'animate-shadow scale-100 transform-gpu transition duration-300 hover:scale-[1.03] active:scale-[0.97]',
-                      'transition-all duration-200 hover:text-primary-300'
+                      'transition-all duration-200 hover:text-primary-300',
                     )}
                   >
                     <FiMenu className='text-2xl' />
@@ -109,7 +109,7 @@ const Header = ({ skipToContent = true }: HeaderProp): JSX.Element => {
                                 active
                                   ? 'bg-rose-500 text-white'
                                   : 'text-dark dark:text-gray-100',
-                                'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors'
+                                'group flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors',
                               )}
                             >
                               {label}

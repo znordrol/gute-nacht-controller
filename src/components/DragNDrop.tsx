@@ -24,7 +24,7 @@ const DragNDrop = ({
         {...rootProps}
         className={clsxm(
           'flex cursor-pointer rounded-lg border-2 border-primary-100 p-20 text-4xl',
-          className
+          className,
         )}
       >
         {children}

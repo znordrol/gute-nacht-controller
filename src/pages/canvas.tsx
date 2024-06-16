@@ -34,7 +34,7 @@ declare module 'react-canvas-draw' {
     getDataURL(
       fileType?: string,
       useBgImage?: boolean,
-      backgroundColor?: string
+      backgroundColor?: string,
     ): string;
   }
 }
@@ -42,7 +42,7 @@ declare module 'react-canvas-draw' {
 const Canvas: NextPage = () => {
   const { data, mutate } = useSWR<{ canvases: CanvasDataRes[] }>(
     '/api/canvas',
-    fetcherCanvas
+    fetcherCanvas,
   );
 
   const canvasRef = useRef<MyCanvasDraw>(null);
@@ -285,7 +285,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       },
     };
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );
 
 export default Canvas;

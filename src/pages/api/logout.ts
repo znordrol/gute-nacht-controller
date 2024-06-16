@@ -10,5 +10,5 @@ export default withIronSessionApiRoute(
     req.session.destroy();
     res.send({ ok: true });
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );

@@ -61,5 +61,5 @@ export default withIronSessionApiRoute(
           .end(`Method ${method} Not Allowed`);
     }
   },
-  COOKIE_OPTIONS
+  COOKIE_OPTIONS,
 );

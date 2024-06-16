@@ -42,7 +42,7 @@ const Login: NextPage = () => {
           }
           return 'Login failed, who are you 🤔';
         },
-      }
+      },
     );
   };
 

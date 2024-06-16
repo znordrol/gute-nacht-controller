@@ -7,7 +7,7 @@ const sayHello = () => {
       '%cilysm ❤️❤️❤️❤️❤️',
     'font-family: Inter, sans-serif; font-size: 1.2rem; font-weight: 500; color: #26ffd7;',
     'font-family: Inter, sans-serif; font-size: 1.2rem; font-weight: 500; color: #26ffd7;',
-    'font-family: Inter, sans-serif; font-size: 1.2rem; font-weight: 500; color: #26ffd7;'
+    'font-family: Inter, sans-serif; font-size: 1.2rem; font-weight: 500; color: #26ffd7;',
   );
 };
 
