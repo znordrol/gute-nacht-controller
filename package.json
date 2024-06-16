@@ -44,7 +44,7 @@
     "next": "13.0.2",
     "next-themes": "^0.2.1",
     "nextjs-progressbar": "^0.0.16",
-    "octokit": "^2.0.10",
+    "octokit": "^2.1.0",
     "preact": "^10.11.2",
     "query-string": "^9.0.0",
     "react": "18.2.0",
