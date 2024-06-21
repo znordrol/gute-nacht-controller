@@ -224,25 +224,29 @@ const GalleryPage: NextPage = () => {
         tags: editTags.map((t) => t.text).filter(Boolean),
       };
 
-      await toast.promise(axios.post(`/api/gallery/${editTagsId}`, payload), {
-        pending: {
-          render: () => {
-            return 'Loading';
+      await toast.promise(
+        axios.post(`/api/gallery/${editTagsId.split('/').pop()}`, payload),
+        {
+          pending: {
+            render: () => {
+              return 'Loading';
+            },
+          },
+          success: {
+            render: () => {
+              removeCache();
+              removeTagsCache();
+              mutate();
+              return 'Updated successfully';
+            },
+          },
+          error: {
+            render: () => {
+              return 'Failed to update!';
+            },
           },
         },
-        success: {
-          render: () => {
-            removeCache();
-            mutate();
-            return 'Updated successfully';
-          },
-        },
-        error: {
-          render: () => {
-            return 'Failed to update!';
-          },
-        },
-      });
+      );
     } finally {
       setEditTagsId(undefined);
     }
@@ -608,23 +612,19 @@ const GalleryPage: NextPage = () => {
             <PhotoAlbum
               layout='rows'
               photos={imgSource}
-              renderContainer={({ containerRef, containerProps, children }) => (
-                <div
-                  ref={containerRef}
-                  {...containerProps}
-                  className='relative group'
-                >
-                  {children}
-                </div>
-              )}
               renderPhoto={({
-                imageProps: { src, alt, style, ...restImageProps },
                 photo: { tags, publicId },
+                wrapperStyle,
+                renderDefaultPhoto,
               }) => (
-                <>
-                  <img src={src} alt={alt} style={style} {...restImageProps} />
+                <div
+                  className={`relative group`}
+                  key={publicId}
+                  style={wrapperStyle}
+                >
+                  {renderDefaultPhoto({ wrapped: true })}
                   <button
-                    className='absolute rounded-full top-2 right-2 bg-slate-500 bg-opacity-50 hover:bg-opacity-90 group-hover:block hidden transition-all'
+                    className={`absolute rounded-full top-1 right-1 md:top-2 md:right-2 bg-slate-500 bg-opacity-40 hover:bg-opacity-90 group-hover:block md:hidden block transition-all`}
                     onClick={() => {
                       setEditTags(
                         tags?.map((t) => ({
@@ -637,9 +637,10 @@ const GalleryPage: NextPage = () => {
                       onOpenTagModal();
                     }}
                   >
-                    <HiDotsHorizontal size={40} />
+                    <HiDotsHorizontal size={20} className='md:hidden block' />
+                    <HiDotsHorizontal size={24} className='hidden md:block' />
                   </button>
-                </>
+                </div>
               )}
               onClick={({ index }) => {
                 setIndex(index);

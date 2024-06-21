@@ -56,7 +56,7 @@ export default withIronSessionApiRoute(
             .send({ message: 'Bad Request' });
         }
 
-        await cloudinary.v2.api.update(id, { tags });
+        await cloudinary.v2.api.update(`tia/${id}`, { tags });
 
         res.send({ ok: true });
         break;
