@@ -41,7 +41,9 @@ export default withIronSessionApiRoute(
     const user = req.session.user;
 
     if (!user || user?.admin !== true) {
-      return res.status(401).send({ message: 'Unauthorized' });
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .send({ message: 'Unauthorized' });
     }
 
     switch (method) {
@@ -84,6 +86,7 @@ export default withIronSessionApiRoute(
               resource_type: 'image',
               prefix: 'tia/',
               max_results: 500,
+              tags: true,
             });
 
         const tagsPromise = cloudinary.v2.api.tags();
@@ -96,7 +99,9 @@ export default withIronSessionApiRoute(
       }
       default:
         res.setHeader('Allow', ['POST', 'GET']);
-        res.status(405).end(`Method ${method} Not Allowed`);
+        res
+          .status(httpStatus.METHOD_NOT_ALLOWED)
+          .end(`Method ${method} Not Allowed`);
     }
   },
   COOKIE_OPTIONS,

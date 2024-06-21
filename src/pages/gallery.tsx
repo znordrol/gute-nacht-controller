@@ -15,6 +15,7 @@ import {
 import { useDropzone } from 'react-dropzone';
 import { FaSortAmountDownAlt, FaSortAmountUpAlt } from 'react-icons/fa';
 import { FiTrash, FiUpload } from 'react-icons/fi';
+import { HiDotsHorizontal } from 'react-icons/hi';
 import PhotoAlbum from 'react-photo-album';
 import { Modal } from 'react-responsive-modal';
 import { SEPARATORS, WithContext as ReactTags } from 'react-tag-input';
@@ -70,12 +71,17 @@ type UploadTag = {
 
 const GalleryPage: NextPage = () => {
   const [open, setOpen] = useState(false);
+  const [openTagModal, setOpenTagModal] = useState(false);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
+  const onOpenTagModal = () => setOpenTagModal(true);
+  const onCloseTagModal = () => setOpenTagModal(false);
 
   const [selectedFile, setSelectedFile] = useState<File>();
   const [preview, setPreview] = useState<string>();
+  const [editTags, setEditTags] = useState<UploadTag[]>([]);
+  const [editTagsId, setEditTagsId] = useState<string>();
   const [index, setIndex] = useState(-1);
   const [isCompressing, setIsCompressing] = useState(false);
   const [compressingProgress, setCompressingProgress] = useState(0);
@@ -208,6 +214,40 @@ const GalleryPage: NextPage = () => {
     handleSetImage(e?.clipboardData?.files);
   };
 
+  const onSubmitEdit = async () => {
+    if (!editTagsId) {
+      return;
+    }
+
+    try {
+      const payload = {
+        tags: editTags.map((t) => t.text).filter(Boolean),
+      };
+
+      await toast.promise(axios.post(`/api/gallery/${editTagsId}`, payload), {
+        pending: {
+          render: () => {
+            return 'Loading';
+          },
+        },
+        success: {
+          render: () => {
+            removeCache();
+            mutate();
+            return 'Updated successfully';
+          },
+        },
+        error: {
+          render: () => {
+            return 'Failed to update!';
+          },
+        },
+      });
+    } finally {
+      setEditTagsId(undefined);
+    }
+  };
+
   const onSubmit = async () => {
     if (!selectedFile) {
       return toast.error('Please include an image!');
@@ -295,6 +335,8 @@ const GalleryPage: NextPage = () => {
           width: v.width,
           height: v.height,
           createdAt: v.created_at,
+          publicId: v.public_id,
+          tags: v.tags,
         })),
         'createdAt',
         direction,
@@ -331,6 +373,40 @@ const GalleryPage: NextPage = () => {
 
     // re-render
     setUploadTags(newTags);
+  };
+
+  const handleDeleteEditTag = (index: number) => {
+    setEditTags((tags) => tags.filter((_, i) => i !== index));
+  };
+
+  const onTagUpdateEditTag = (index: number, newTag: UploadTag) => {
+    const updatedTags = [...uploadTags];
+    updatedTags.splice(index, 1, newTag);
+    setEditTags(updatedTags);
+  };
+
+  const handleAdditionEditTag = (tag: UploadTag) => {
+    setEditTags((prevTags) => {
+      return [...prevTags, tag];
+    });
+  };
+
+  const handleDragEditTag = (
+    tag: UploadTag,
+    currPos: number,
+    newPos: number,
+  ) => {
+    const newTags = editTags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    setEditTags(newTags);
+  };
+
+  const onClearAllEditTag = () => {
+    setEditTags([]);
   };
 
   const handleTagClick = (index: number) => {
@@ -499,10 +575,75 @@ const GalleryPage: NextPage = () => {
         </section>
         <section>
           <div>
+            <Modal
+              open={openTagModal}
+              onClose={onCloseTagModal}
+              center
+              classNames={{ modal: 'rounded-xl bg:light dark:bg-dark w-1/2' }}
+              closeIcon={<XButton />}
+            >
+              <div className='flex justify-center items-center flex-col gap-8'>
+                <h1>Edit tags</h1>
+                <ReactTags
+                  separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
+                  tags={editTags}
+                  suggestions={suggestions}
+                  handleDelete={handleDeleteEditTag}
+                  handleAddition={handleAdditionEditTag}
+                  handleDrag={handleDragEditTag}
+                  handleTagClick={handleTagClick}
+                  onTagUpdate={onTagUpdateEditTag}
+                  inputFieldPosition='bottom'
+                  editable
+                  clearAll
+                  onClearAll={onClearAllEditTag}
+                  maxTags={5}
+                  placeholder='Press enter or comma'
+                />
+                <Button variant='primary' onClick={onSubmitEdit}>
+                  Submit
+                </Button>
+              </div>
+            </Modal>
             <PhotoAlbum
               layout='rows'
               photos={imgSource}
-              onClick={({ index }) => setIndex(index)}
+              renderContainer={({ containerRef, containerProps, children }) => (
+                <div
+                  ref={containerRef}
+                  {...containerProps}
+                  className='relative group'
+                >
+                  {children}
+                </div>
+              )}
+              renderPhoto={({
+                imageProps: { src, alt, style, ...restImageProps },
+                photo: { tags, publicId },
+              }) => (
+                <>
+                  <img src={src} alt={alt} style={style} {...restImageProps} />
+                  <button
+                    className='absolute rounded-full top-2 right-2 bg-slate-500 bg-opacity-50 hover:bg-opacity-90 group-hover:block hidden transition-all'
+                    onClick={() => {
+                      setEditTags(
+                        tags?.map((t) => ({
+                          id: t,
+                          className: '',
+                          text: t,
+                        })) ?? [],
+                      );
+                      setEditTagsId(publicId);
+                      onOpenTagModal();
+                    }}
+                  >
+                    <HiDotsHorizontal size={40} />
+                  </button>
+                </>
+              )}
+              onClick={({ index }) => {
+                setIndex(index);
+              }}
             />
             <Lightbox
               slides={imgSource}

@@ -12,6 +12,7 @@ export type CloudinaryResource = {
   url: string;
   version: number;
   width: number;
+  tags?: string[];
 };
 
 export type CloudinaryAdminResponse = {
