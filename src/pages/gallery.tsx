@@ -234,8 +234,8 @@ const GalleryPage: NextPage = () => {
           },
           success: {
             render: () => {
-              removeCache();
               removeTagsCache();
+              removeCache();
               mutate();
               return 'Updated successfully';
             },
