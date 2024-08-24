@@ -26,7 +26,7 @@
     "@headlessui/react": "^1.7.4",
     "@octokit/plugin-create-or-update-text-file": "^2.0.3",
     "@videosdk.live/react-sdk": "^0.1.64",
-    "axios": "^1.6.8",
+    "axios": "^1.7.5",
     "bcrypt": "^5.1.0",
     "browser-image-compression": "^2.0.2",
     "class-variance-authority": "^0.7.0",
