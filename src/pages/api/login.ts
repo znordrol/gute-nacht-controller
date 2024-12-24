@@ -39,6 +39,7 @@ export default withIronSessionApiRoute(
         const data = await getUser(req.body);
 
         if (!data || !(await compare(req.body.password, data.data.password))) {
+          console.log(data);
           return res.status(httpStatus.BAD_REQUEST).json({
             status: httpStatus.BAD_REQUEST,
             message: 'Name or password are invalid, who are u 🤔',
